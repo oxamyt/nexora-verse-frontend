@@ -19,4 +19,17 @@ const signUpSchema = z
     path: ["confirm"],
   });
 
-export { signUpSchema };
+const loginSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, { message: "Username must be at least 3 characters long." })
+    .max(15, { message: "Username must not exceed 15 characters." }),
+  password: z
+    .string()
+    .trim()
+    .min(3, { message: "Password must be at least 3 characters long." })
+    .max(30, { message: "Username must not exceed 30 characters." }),
+});
+
+export { signUpSchema, loginSchema };
