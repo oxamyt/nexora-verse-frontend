@@ -13,10 +13,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AuthLayout } from "./AuthLayout";
 import { FaUser, FaLock } from "react-icons/fa";
+import { useLoginMutation } from "@/store/Api";
+import { isErrorData } from "@/types/types";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export function Login() {
+  const [focusState, setFocusState] = useState({
+    username: false,
+    password: false,
+  });
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,77 +33,120 @@ export function Login() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    return values;
+  const [login, { isLoading, error }] = useLoginMutation();
+
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    try {
+      const response = await login(values).unwrap();
+
+      if (response.token) {
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("userId", response.userId);
+      } else {
+        console.error("Error: No token received");
+      }
+    } catch (err) {
+      console.error("Error logging in:", err);
+    }
   }
 
   return (
-    <AuthLayout>
-      <Form {...form}>
-        <motion.form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 text-custom-1 max-w-xl mx-auto p-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-custom-1 font-bold text-lg">
-                  Username
-                </FormLabel>
-                <div className="relative">
-                  <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-custom-7" />
-                  <FormControl>
-                    <Input
-                      className="p-6 pl-12 text-custom-7 bg-custom-6 text-lg border border-custom-2 rounded-lg w-full"
-                      placeholder="Enter your username"
-                      {...field}
-                    />
-                  </FormControl>
-                </div>
-                <FormMessage className="text-md text-custom-5" />
-              </FormItem>
-            )}
-          />
+    <Form {...form}>
+      <motion.form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8 text-custom-1 max-w-xl mx-auto p-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-custom-1 font-bold text-lg">
+                Username
+              </FormLabel>
+              <div className="relative">
+                <FaUser
+                  className={`absolute w-5  h-5 left-4 top-1/2 transform -translate-y-1/2 ${
+                    focusState.username ? "text-custom-1" : "text-custom-7"
+                  }`}
+                />
+                <FormControl>
+                  <Input
+                    className="p-6 pl-12 text-custom-7 bg-custom-6 text-lg border border-custom-2 rounded-lg w-full"
+                    placeholder="Enter your username"
+                    {...field}
+                    onFocus={() =>
+                      setFocusState((prev) => ({ ...prev, username: true }))
+                    }
+                    onBlur={() =>
+                      setFocusState((prev) => ({ ...prev, username: false }))
+                    }
+                  />
+                </FormControl>
+              </div>
+              <FormMessage className="text-md text-custom-5" />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-custom-1 font-bold text-lg">
-                  Password
-                </FormLabel>
-                <div className="relative">
-                  <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-custom-7" />
-                  <FormControl>
-                    <Input
-                      className="p-6 pl-12 bg-custom-6 text-custom-7 text-lg border border-custom-2 rounded-lg w-full"
-                      type="password"
-                      placeholder="Enter your password"
-                      {...field}
-                    />
-                  </FormControl>
-                </div>
-                <FormMessage className="text-md text-custom-5" />
-              </FormItem>
-            )}
-          />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-custom-1 font-bold text-lg">
+                Password
+              </FormLabel>
+              <div className="relative">
+                <FaLock
+                  className={`absolute w-5  h-5 left-4 top-1/2 transform -translate-y-1/2 ${
+                    focusState.password ? "text-custom-1" : "text-custom-7"
+                  }`}
+                />
+                <FormControl>
+                  <Input
+                    className="p-6 pl-12 bg-custom-6 text-custom-7 text-lg border border-custom-2 rounded-lg w-full"
+                    type="password"
+                    placeholder="Enter your password"
+                    {...field}
+                    onFocus={() =>
+                      setFocusState((prev) => ({ ...prev, password: true }))
+                    }
+                    onBlur={() =>
+                      setFocusState((prev) => ({ ...prev, password: false }))
+                    }
+                  />
+                </FormControl>
+              </div>
+              <FormMessage className="text-md text-custom-5" />
+            </FormItem>
+          )}
+        />
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              className="bg-custom-4 text-lg font-bold p-8 w-full"
-              type="submit"
-            >
-              Login ♥‿♥
-            </Button>
-          </motion.div>
-        </motion.form>
-      </Form>
-    </AuthLayout>
+        {error && "status" in error && isErrorData(error.data) && (
+          <div className="text-custom-5 mt-4">
+            <p>{error.data.error}</p>
+          </div>
+        )}
+        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+          <Button
+            className="bg-custom-4 text-lg font-bold p-8 w-full"
+            type="submit"
+          >
+            {isLoading ? "Logging in..." : "Login ♥‿♥"}
+          </Button>
+        </motion.div>
+
+        <p className="text-custom-1 text-center mt-4">
+          Don't have an account?{" "}
+          <Link to="/auth/signup" className="text-custom-4 font-bold">
+            Sign up!
+          </Link>
+        </p>
+      </motion.form>
+    </Form>
   );
 }

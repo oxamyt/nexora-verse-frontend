@@ -1,9 +1,27 @@
 import { expect, describe, it, vi, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router-dom";
 import { SignUp } from "../pages/Auth/SignUp";
+import { store } from "@/store/store";
+import { Provider } from "react-redux";
+import { useSignUpMutation } from "@/store/Api";
+
+vi.mock("@/store/Api", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/store/Api")>();
+  return {
+    ...actual,
+    useSignUpMutation: vi.fn(() => [
+      vi.fn(async (values) => ({
+        username: values.username,
+        password: values.password,
+        confirm: values.confirm,
+      })),
+      { isLoading: false, error: null, isSuccess: false },
+    ]),
+  };
+});
 
 describe("SignUpPage", () => {
   afterEach(() => {
@@ -12,9 +30,11 @@ describe("SignUpPage", () => {
 
   it("should render sign up form", () => {
     render(
-      <Router>
-        <SignUp />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <SignUp />
+        </Router>
+      </Provider>
     );
 
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
@@ -29,9 +49,11 @@ describe("SignUpPage", () => {
     const user = userEvent.setup();
 
     render(
-      <Router>
-        <SignUp />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <SignUp />
+        </Router>
+      </Provider>
     );
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText("Password");
@@ -50,9 +72,11 @@ describe("SignUpPage", () => {
     const user = userEvent.setup();
 
     render(
-      <Router>
-        <SignUp />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <SignUp />
+        </Router>
+      </Provider>
     );
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText("Password");
@@ -71,11 +95,24 @@ describe("SignUpPage", () => {
 
   it("should submit the form when passwords match", async () => {
     const user = userEvent.setup();
+    const signUpMock = vi.fn(async (values) => ({
+      data: {
+        username: values.username,
+        password: values.password,
+        confirm: values.confirm,
+      },
+    }));
 
+    (useSignUpMutation as any).mockReturnValue([
+      signUpMock,
+      { isLoading: false, error: null, isSuccess: false },
+    ]);
     render(
-      <Router>
-        <SignUp />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <SignUp />
+        </Router>
+      </Provider>
     );
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText("Password");
@@ -92,7 +129,13 @@ describe("SignUpPage", () => {
     expect(usernameInput).toHaveValue("sam");
     expect(passwordInput).toHaveValue("password123");
     expect(confirmPasswordInput).toHaveValue("password123");
-
+    await waitFor(() => {
+      expect(signUpMock).toHaveBeenCalledWith({
+        username: "sam",
+        password: "password123",
+        confirm: "password123",
+      });
+    });
     expect(screen.queryByText("Passwords don't match")).not.toBeInTheDocument();
   });
 });
