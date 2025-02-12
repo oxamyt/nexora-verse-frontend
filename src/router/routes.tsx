@@ -4,6 +4,8 @@ import { SignUp } from "@/pages/Auth/SignUp";
 import { AuthLayout } from "@/pages/Auth/AuthLayout";
 import { Login } from "@/pages/Auth/Login";
 import { Outlet } from "react-router-dom";
+import { ProfileLayout } from "@/pages/Profile/ProfileLayout";
+import { Profile } from "@/pages/Profile/Profile";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
       { path: "signup", element: <SignUp /> },
       { path: "login", element: <Login /> },
     ],
+  },
+  {
+    path: "/profile/:id",
+    element: (
+      <ProfileLayout>
+        <Profile />
+      </ProfileLayout>
+    ),
   },
 ]);
 

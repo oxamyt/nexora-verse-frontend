@@ -15,10 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useSignUpMutation } from "@/store/Api";
-import { isErrorData } from "@/types/types";
+import { isErrorData } from "@/types/ErrorDataTypes";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 
 export function SignUp() {
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -42,6 +44,13 @@ export function SignUp() {
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     try {
       await signUp(values).unwrap();
+      toast(
+        <p className="flex items-center justify-center gap-1">
+          Account successfully created{" "}
+          <IoIosCheckmarkCircle className="w-10 h-10" />
+        </p>
+      );
+
       navigate("/auth/login");
     } catch (err) {
       console.error("Error signing up:", err);
@@ -156,21 +165,21 @@ export function SignUp() {
           )}
         />
 
-        {error && "status" in error && isErrorData(error.data) && (
+        {error && "data" in error && isErrorData(error.data) && (
           <div className="text-custom-5 mt-4">
             <p>{error.data.error}</p>
           </div>
         )}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
           <Button
-            className="bg-custom-4 text-lg font-bold p-8 w-full"
+            className="bg-custom-4 text-xl font-bold p-8 w-full"
             type="submit"
             disabled={isLoading}
           >
             {isLoading ? "Signing Up..." : "Sign Up ♥‿♥"}
           </Button>
         </motion.div>
-        <p className="text-custom-1 text-center mt-4">
+        <p className="text-custom-7 font-bold text-center mt-4">
           Have an account?{" "}
           <Link to="/auth/login" className="text-custom-4 font-bold">
             Login!

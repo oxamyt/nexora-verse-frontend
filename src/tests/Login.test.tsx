@@ -29,9 +29,11 @@ describe("LoginPage", () => {
 
   it("should render login form", () => {
     render(
-      <Router>
-        <Login />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Login />
+        </Router>
+      </Provider>
     );
 
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
@@ -43,9 +45,11 @@ describe("LoginPage", () => {
     const user = userEvent.setup();
 
     render(
-      <Router>
-        <Login />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Login />
+        </Router>
+      </Provider>
     );
     const usernameInput = screen.getByLabelText(/username/i);
     const passwordInput = screen.getByLabelText("Password");

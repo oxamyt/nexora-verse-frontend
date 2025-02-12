@@ -15,11 +15,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaUser, FaLock } from "react-icons/fa";
 import { useLoginMutation } from "@/store/Api";
-import { isErrorData } from "@/types/types";
+import { isErrorData } from "@/types/ErrorDataTypes";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { setUser } from "@/store/authSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 export function Login() {
+  const dispatch = useAppDispatch();
+
   const [focusState, setFocusState] = useState({
     username: false,
     password: false,
@@ -41,7 +45,8 @@ export function Login() {
 
       if (response.token) {
         localStorage.setItem("token", response.token);
-        localStorage.setItem("userId", response.userId);
+        console.log("setting", response.userId);
+        dispatch(setUser(response.userId));
       } else {
         console.error("Error: No token received");
       }
@@ -126,21 +131,21 @@ export function Login() {
           )}
         />
 
-        {error && "status" in error && isErrorData(error.data) && (
+        {error && "data" in error && isErrorData(error.data) && (
           <div className="text-custom-5 mt-4">
             <p>{error.data.error}</p>
           </div>
         )}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
           <Button
-            className="bg-custom-4 text-lg font-bold p-8 w-full"
+            className="bg-custom-4 text-xl font-bold p-8 w-full"
             type="submit"
           >
             {isLoading ? "Logging in..." : "Login ♥‿♥"}
           </Button>
         </motion.div>
 
-        <p className="text-custom-1 text-center mt-4">
+        <p className="text-custom-7 font-bold text-center mt-4">
           Don't have an account?{" "}
           <Link to="/auth/signup" className="text-custom-4 font-bold">
             Sign up!

@@ -24,7 +24,8 @@ const loginSchema = z.object({
     .string()
     .trim()
     .min(3, { message: "Username must be at least 3 characters long." })
-    .max(15, { message: "Username must not exceed 15 characters." }),
+    .max(15, { message: "Username must not exceed 15 characters." })
+    .optional(),
   password: z
     .string()
     .trim()
@@ -32,4 +33,23 @@ const loginSchema = z.object({
     .max(30, { message: "Username must not exceed 30 characters." }),
 });
 
-export { signUpSchema, loginSchema };
+const profileSchema = z
+  .object({
+    username: z
+      .string()
+      .trim()
+      .min(3, { message: "Username must be at least 3 characters long." })
+      .max(15, { message: "Username must not exceed 15 characters." })
+      .optional(),
+    bio: z
+      .string()
+      .min(3, { message: "Bio must be at least 3 characters long." })
+      .max(80, { message: "Bio must not exceed 80 characters." })
+      .optional(),
+  })
+  .refine((data) => data.username || data.bio, {
+    message: "At least one of 'username' or 'bio' must be provided.",
+    path: ["username", "bio"],
+  });
+
+export { signUpSchema, loginSchema, profileSchema };

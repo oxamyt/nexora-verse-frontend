@@ -19,7 +19,13 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+    profile: builder.query({
+      query: (id) => ({
+        url: id ? `/users?id=${id}` : "/users",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useSignUpMutation, useLoginMutation } = api;
+export const { useSignUpMutation, useLoginMutation, useProfileQuery } = api;
