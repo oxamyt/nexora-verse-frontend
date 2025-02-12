@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,21 +22,9 @@ import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { ProfileFormProps } from "@/types/types";
 
-export function ProfileForm({
-  profile,
-  setProfile,
-}: {
-  profile: { username: string; bio: string };
-  setProfile: (profile: {
-    username: string;
-    bio: string;
-    avatarUrl: string;
-    followers: number;
-    following: number;
-    posts: number;
-  }) => void;
-}) {
+export function ProfileForm({ profile, setProfile }: ProfileFormProps) {
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof profileSchema>>({
