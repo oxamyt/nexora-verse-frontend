@@ -37,7 +37,7 @@ export function Profile() {
     if (userProfile) {
       setProfile({
         username: userProfile.username,
-        bio: userProfile.bio,
+        bio: userProfile.profile.bio,
         avatarUrl: userProfile.avatarUrl || "",
         followers: userProfile._count.followers,
         following: userProfile._count.following,
@@ -69,7 +69,9 @@ export function Profile() {
         setProfile={setProfile}
       />
 
-      <p className="px-4 space-x-4">{profile.bio}</p>
+      <p className="px-4 space-x-4 break-words overflow-hidden">
+        {profile.bio}
+      </p>
 
       <motion.div
         className="mt-4 border-b"

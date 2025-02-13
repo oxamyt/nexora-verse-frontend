@@ -3,7 +3,16 @@ const API = import.meta.env.VITE_API_URL;
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: API }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: API,
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (credentials) => ({
@@ -25,7 +34,19 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (credentials) => ({
+        url: "/users",
+        method: "PATCH",
+        body: credentials,
+      }),
+    }),
   }),
 });
 
-export const { useSignUpMutation, useLoginMutation, useProfileQuery } = api;
+export const {
+  useSignUpMutation,
+  useLoginMutation,
+  useProfileQuery,
+  useUpdateProfileMutation,
+} = api;

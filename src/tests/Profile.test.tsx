@@ -10,12 +10,14 @@ import { Profile } from "@/pages/Profile/Profile";
 const mockUserProfile = {
   data: {
     username: "JohnDoe",
-    bio: "This is a bio",
     avatarUrl: "https://example.com/avatar.jpg",
     _count: {
       followers: 2,
       following: 5,
       posts: 10,
+    },
+    profile: {
+      bio: "Bio",
     },
   },
   isLoading: false,
@@ -53,7 +55,7 @@ describe("Profile Page", () => {
     renderProfile();
 
     expect(await screen.findByText("JohnDoe")).toBeInTheDocument();
-    expect(await screen.findByText("This is a bio")).toBeInTheDocument();
+    expect(await screen.findByText("Bio")).toBeInTheDocument();
     expect(await screen.findByText("2")).toBeInTheDocument();
     expect(await screen.findByText("5")).toBeInTheDocument();
     expect(await screen.findByText("10")).toBeInTheDocument();

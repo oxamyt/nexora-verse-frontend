@@ -18,7 +18,7 @@ export interface ProfileContentProps {
 export interface ProfileDetailsProps {
   profile: ProfileState;
   isProfileOwner: boolean;
-  setProfile: (profile: ProfileState) => void;
+  setProfile: React.Dispatch<React.SetStateAction<ProfileState>>;
 }
 
 export interface ProfileFormProps {

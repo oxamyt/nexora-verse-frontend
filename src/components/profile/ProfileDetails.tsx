@@ -16,7 +16,7 @@ export function ProfileDetails({
         transition={{ duration: 0.4 }}
       >
         <div>
-          <h1 className="text-4xl font-bold">{profile.username}</h1>
+          <h1 className="text-2xl font-bold">{profile.username}</h1>
         </div>
         {isProfileOwner ? (
           <ProfileForm profile={profile} setProfile={setProfile} />

@@ -22,21 +22,53 @@ import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { ProfileFormProps } from "@/types/types";
+import { useUpdateProfileMutation } from "@/store/Api";
+import { ProfileState } from "@/types/types";
+import { isErrorData } from "@/types/ErrorDataTypes";
+import { useEffect } from "react";
 
-export function ProfileForm({ profile, setProfile }: ProfileFormProps) {
+export function ProfileForm({
+  profile,
+  setProfile,
+}: {
+  profile: ProfileState;
+  setProfile: React.Dispatch<React.SetStateAction<ProfileState>>;
+}) {
+  const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
+
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
-    defaultValues: {
-      username: profile.username || "",
-      bio: profile.bio || "",
-    },
   });
 
-  function onSubmit() {
-    console.log();
+  useEffect(() => {
+    form.reset({
+      username: profile.username || "",
+      bio: profile.bio || "",
+    });
+  }, [profile, form]);
+
+  async function onSubmit(values: z.infer<typeof profileSchema>) {
+    const updates: Partial<z.infer<typeof profileSchema>> = {};
+    if (values.username && values.username !== profile.username) {
+      updates.username = values.username;
+    }
+    updates.bio = values.bio;
+
+    try {
+      const result = await updateProfile(updates).unwrap();
+
+      setProfile((prev) => ({
+        ...prev,
+        username: result.updatedUser?.username ?? prev.username,
+        bio: result.updatedProfile?.bio ?? prev.bio,
+      }));
+
+      setOpen(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
   }
 
   return (
@@ -44,7 +76,11 @@ export function ProfileForm({ profile, setProfile }: ProfileFormProps) {
       open={open}
       onOpenChange={(isOpen) => {
         setOpen(isOpen);
-        if (!isOpen) form.reset();
+        if (!isOpen)
+          form.reset({
+            username: profile.username || "",
+            bio: profile.bio || "",
+          });
       }}
     >
       <DialogTrigger asChild>
@@ -109,12 +145,18 @@ export function ProfileForm({ profile, setProfile }: ProfileFormProps) {
               )}
             />
 
+            {error && "data" in error && isErrorData(error.data) && (
+              <div className="text-custom-5 mt-4">
+                <p>{error.data.error}</p>
+              </div>
+            )}
+
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
               <Button
                 className="bg-custom-4 text-xl font-bold p-8 w-full"
                 type="submit"
               >
-                Submit
+                {isLoading ? "Updating profile..." : "Submit ♥‿♥"}
               </Button>
             </motion.div>
           </motion.form>
