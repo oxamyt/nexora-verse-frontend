@@ -4,6 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -11,15 +14,16 @@ export default {
       },
       colors: {
         custom: {
-          1: "#6f9f8a",
-          2: "#b3d1c4",
-          3: "#f2e5c0",
-          4: "#d88a4f",
-          5: "#e56f5d",
-          6: "#d0c086",
-          7: "#4b4b4b",
-          8: "#FFFDFA",
-          9: "#50ad61",
+          1: "#161E27",
+          2: "#9C4CFE",
+          3: "#1E2936",
+          4: "#A1ACB5",
+          5: "#899AAC",
+          6: "#B073FF",
+          7: "#8038D9",
+          8: "#1E2936",
+          9: "#F1F3F5",
+          10: "#3FA318",
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

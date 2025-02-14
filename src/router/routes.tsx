@@ -1,16 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "@/App";
 import { SignUp } from "@/pages/Auth/SignUp";
 import { AuthLayout } from "@/pages/Auth/AuthLayout";
 import { Login } from "@/pages/Auth/Login";
 import { Outlet } from "react-router-dom";
 import { ProfileLayout } from "@/pages/Profile/ProfileLayout";
 import { Profile } from "@/pages/Profile/Profile";
+import Home from "@/pages/Home/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Home />,
   },
   {
     path: "/auth",

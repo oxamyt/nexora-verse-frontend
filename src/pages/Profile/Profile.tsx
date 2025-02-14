@@ -7,7 +7,7 @@ import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { SkeletonProfile } from "@/features/skeletonCards/skeletonProfile";
 import { ProfileError } from "@/components/profile/ProfileError";
-import { ProfileHeader } from "@/components/profile/ProfileAvatar";
+import { ProfileHeader } from "@/components/profile/ProfileHeader";
 import { ProfileDetails } from "@/components/profile/ProfileDetails";
 import { ProfileState } from "@/types/types";
 import { PostCategories } from "@/types/types";
@@ -69,12 +69,12 @@ export function Profile() {
         setProfile={setProfile}
       />
 
-      <p className="px-4 space-x-4 break-words overflow-hidden">
+      <p className="px-4 text-custom-9 space-x-4 break-words overflow-hidden">
         {profile.bio}
       </p>
 
       <motion.div
-        className="mt-4 border-b"
+        className="mt-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}

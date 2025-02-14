@@ -85,16 +85,16 @@ export function ProfileForm({
     >
       <DialogTrigger asChild>
         <motion.button
-          className="bg-custom-4 rounded-full text-custom-8 text-xl font-bold px-4 py-2"
+          className="bg-custom-8 text-xl text-custom-4 rounded-full font-bold px-4 py-2"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
           Edit Profile
         </motion.button>
       </DialogTrigger>
-      <DialogContent className="bg-custom-3 max-w-full">
+      <DialogContent className="bg-custom-3 border-none max-w-full">
         <DialogHeader>
-          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogTitle className="text-custom-9">Edit Profile</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <motion.form
@@ -109,18 +109,18 @@ export function ProfileForm({
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-custom-1 font-bold text-lg">
+                  <FormLabel className="text-custom-5 font-bold text-lg">
                     Username
                   </FormLabel>
                   <FormControl>
                     <Input
-                      className="p-6  text-custom-7 bg-custom-6 text-lg border border-custom-2 rounded-lg w-full"
+                      className="p-6 text-custom-5 bg-custom-3 text-lg border-custom-4 focus:border-custom-2 focus:outline-none"
                       placeholder="Enter your username"
                       {...field}
                     />
                   </FormControl>
 
-                  <FormMessage className="text-md text-custom-5" />
+                  <FormMessage className="text-md bg-red-600  text-white p-3 rounded-lg" />
                 </FormItem>
               )}
             />
@@ -130,30 +130,30 @@ export function ProfileForm({
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-custom-1 font-bold text-lg">
+                  <FormLabel className="text-custom-5 font-bold text-lg">
                     Bio
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      className="pl-6 bg-custom-6 text-custom-7 text-lg border border-custom-2 rounded-lg w-full"
+                      className="pl-6 bg-custom-3 text-custom-5 text-lg border border-custom-4 focus:border-custom-2 focus:outline-none rounded-lg w-full"
                       placeholder="Enter your bio"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage className="text-md text-custom-5" />
+                  <FormMessage className="text-md bg-red-600  text-white p-3 rounded-lg" />
                 </FormItem>
               )}
             />
 
             {error && "data" in error && isErrorData(error.data) && (
-              <div className="text-custom-5 mt-4">
+              <div className="text-md bg-red-600  text-white p-3 rounded-lg">
                 <p>{error.data.error}</p>
               </div>
             )}
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
               <Button
-                className="bg-custom-4 text-xl font-bold p-8 w-full"
+                className="bg-custom-2 text-xl font-bold p-8 w-full"
                 type="submit"
               >
                 {isLoading ? "Updating profile..." : "Submit ♥‿♥"}

@@ -12,8 +12,8 @@ export function ProfileContent({
         <motion.button
           className={`px-4 py-4 font-bold ${
             activePostCategory === PostCategories.POSTS
-              ? "border-b-2 border-black"
-              : "text-gray-500 hover:text-black"
+              ? " text-custom-9 border-b"
+              : "text-custom-5 hover:text-black"
           }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -24,8 +24,8 @@ export function ProfileContent({
         <motion.button
           className={`px-4 py-4 font-bold ${
             activePostCategory === PostCategories.LIKED_POSTS
-              ? "border-b-2 border-black"
-              : "text-gray-500 hover:text-black"
+              ? " text-custom-9 border-b"
+              : "text-custom-5 hover:text-black"
           }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

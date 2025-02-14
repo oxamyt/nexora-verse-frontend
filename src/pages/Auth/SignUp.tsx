@@ -71,18 +71,18 @@ export function SignUp() {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-custom-1 font-bold text-lg">
+              <FormLabel className="text-custom-5 font-bold text-lg">
                 Username
               </FormLabel>
               <div className="relative">
                 <FaUser
                   className={`absolute w-5  h-5 left-4 top-1/2 transform -translate-y-1/2 ${
-                    focusState.username ? "text-custom-1" : "text-custom-7"
+                    focusState.username ? "text-custom-2" : "text-custom-5"
                   }`}
                 />
                 <FormControl>
                   <Input
-                    className="p-6 pl-12 text-custom-7 bg-custom-6 text-lg border border-custom-2 rounded-lg w-full"
+                    className="p-6 pl-12 text-custom-5 bg-custom-3 text-lg border-custom-3 border-2 hover:border-custom-5 focus:border-custom-2 focus:outline-none"
                     placeholder="Enter your username"
                     {...field}
                     onFocus={() =>
@@ -94,27 +94,28 @@ export function SignUp() {
                   />
                 </FormControl>
               </div>
-              <FormMessage className="text-md text-custom-5" />
+              <FormMessage className="text-md bg-red-600 text-white p-3 rounded-lg" />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-custom-1 font-bold text-lg">
+              <FormLabel className="text-custom-5  font-bold text-lg">
                 Password
               </FormLabel>
               <div className="relative">
                 <FaLock
                   className={`absolute w-5  h-5 left-4 top-1/2 transform -translate-y-1/2 ${
-                    focusState.password ? "text-custom-1" : "text-custom-7"
+                    focusState.password ? "text-custom-2" : "text-custom-5"
                   }`}
                 />
                 <FormControl>
                   <Input
-                    className="p-6 pl-12 bg-custom-6 text-custom-7 text-lg border border-custom-2 rounded-lg w-full"
+                    className="p-6 pl-12 text-custom-5 bg-custom-3 text-lg border-custom-3 border-2 hover:border-custom-5 focus:border-custom-2 focus:outline-none"
                     type="password"
                     placeholder="Enter your password"
                     {...field}
@@ -127,27 +128,28 @@ export function SignUp() {
                   />
                 </FormControl>
               </div>
-              <FormMessage className="text-md text-custom-5" />
+              <FormMessage className="text-md bg-red-600  text-white p-3 rounded-lg" />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="confirm"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-custom-1 font-bold text-lg">
+              <FormLabel className="text-custom-5  font-bold text-lg">
                 Confirm Password
               </FormLabel>
               <div className="relative">
                 <FaLock
                   className={`absolute w-5  h-5 left-4 top-1/2 transform -translate-y-1/2 ${
-                    focusState.confirm ? "text-custom-1" : "text-custom-7"
+                    focusState.confirm ? "text-custom-2" : "text-custom-5"
                   }`}
                 />
                 <FormControl>
                   <Input
-                    className="p-6 pl-12 bg-custom-6 text-custom-7 text-lg border border-custom-2 rounded-lg w-full"
+                    className="p-6 pl-12 text-custom-5 bg-custom-3 text-lg border-custom-3 border-2 hover:border-custom-5 focus:border-custom-2 focus:outline-none"
                     type="password"
                     placeholder="Confirm your password"
                     {...field}
@@ -160,28 +162,28 @@ export function SignUp() {
                   />
                 </FormControl>
               </div>
-              <FormMessage className="text-md text-custom-5" />
+              <FormMessage className="text-md bg-red-600 text-white p-3 rounded-lg" />
             </FormItem>
           )}
         />
 
         {error && "data" in error && isErrorData(error.data) && (
-          <div className="text-custom-5 mt-4">
+          <div className="text-md bg-red-600 text-white p-3 rounded-lg">
             <p>{error.data.error}</p>
           </div>
         )}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
           <Button
-            className="bg-custom-4 text-xl font-bold p-8 w-full"
+            className="bg-custom-2 text-xl font-bold p-8 w-full"
             type="submit"
             disabled={isLoading}
           >
             {isLoading ? "Signing Up..." : "Sign Up ♥‿♥"}
           </Button>
         </motion.div>
-        <p className="text-custom-7 font-bold text-center mt-4">
+        <p className="text-custom-5 font-bold text-center mt-4">
           Have an account?{" "}
-          <Link to="/auth/login" className="text-custom-4 font-bold">
+          <Link to="/auth/login" className="text-custom-2 font-bold">
             Login!
           </Link>
         </p>
