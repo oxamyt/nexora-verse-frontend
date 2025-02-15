@@ -1,22 +1,25 @@
-import { Link } from "react-router-dom";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
-export function Home() {
+export default function Home() {
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen bg-custom-1">
       <motion.img
         src="/galaxy.png"
         className="w-32"
+        whileTap={{ scale: 1.2 }}
         animate={{
           rotate: [0, 360],
         }}
         transition={{
-          repeat: Infinity,
-          duration: 10,
-          ease: "linear",
+          rotate: {
+            repeat: Infinity,
+            duration: 10,
+            ease: "linear",
+          },
         }}
       />
-      <h1 className="text-4xl font-bold text-white mb-8">Nexora</h1>{" "}
+      <h1 className="text-4xl font-bold text-white mb-8">Nexora</h1>
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
         <Link
           to="/auth/signup"
@@ -36,5 +39,3 @@ export function Home() {
     </div>
   );
 }
-
-export default Home;
