@@ -41,6 +41,12 @@ export const api = createApi({
         body: credentials,
       }),
     }),
+    follow: builder.mutation({
+      query: (id) => ({
+        url: `/follows/${id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -49,4 +55,5 @@ export const {
   useLoginMutation,
   useProfileQuery,
   useUpdateProfileMutation,
+  useFollowMutation,
 } = api;

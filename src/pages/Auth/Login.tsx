@@ -20,9 +20,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { setUser } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [focusState, setFocusState] = useState({
     username: false,
@@ -46,7 +48,9 @@ export function Login() {
       if (response.token) {
         localStorage.setItem("token", response.token);
         console.log("setting", response.userId);
+
         dispatch(setUser(response.userId));
+        navigate(`/profile/${response.userId}`);
       } else {
         console.error("Error: No token received");
       }

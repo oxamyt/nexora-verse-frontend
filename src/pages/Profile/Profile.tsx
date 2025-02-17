@@ -18,30 +18,33 @@ export function Profile() {
     PostCategories.POSTS
   );
   const [profile, setProfile] = useState<ProfileState>({
+    id: 0,
     username: "",
     bio: "",
     avatarUrl: "",
     followers: 0,
     following: 0,
     posts: 0,
+    isFollowedByRequester: false,
   });
 
   const { id } = useParams();
 
   const { data: userProfile, isLoading } = useProfileQuery(id);
   const userId = useSelector((state: RootState) => state.auth.userId);
-
-  const isProfileOwner = userId === id;
+  const isProfileOwner = Number(userId) === Number(id);
 
   useEffect(() => {
     if (userProfile) {
       setProfile({
+        id: userProfile.id,
         username: userProfile.username,
         bio: userProfile.profile.bio,
         avatarUrl: userProfile.avatarUrl || "",
         followers: userProfile._count.followers,
         following: userProfile._count.following,
         posts: userProfile._count.posts,
+        isFollowedByRequester: userProfile.isFollowedByRequester,
       });
     }
   }, [userProfile]);

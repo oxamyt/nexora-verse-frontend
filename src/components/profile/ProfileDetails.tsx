@@ -1,12 +1,44 @@
 import { motion } from "motion/react";
 import { ProfileForm } from "@/pages/Profile/ProfileForm";
 import { ProfileDetailsProps } from "@/types/types";
+import { useFollowMutation } from "@/store/Api";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export function ProfileDetails({
   profile,
   isProfileOwner,
   setProfile,
 }: ProfileDetailsProps) {
+  const [follow, { isLoading }] = useFollowMutation();
+  const [isFollowing, setIsFollowing] = useState(profile.isFollowedByRequester);
+
+  useEffect(() => {
+    setIsFollowing(profile.isFollowedByRequester);
+  }, [profile.isFollowedByRequester]);
+
+  async function toggleFollow() {
+    try {
+      await follow(profile.id);
+
+      if (isFollowing) {
+        setProfile((prev) => ({
+          ...prev,
+          followers: prev.followers - 1,
+        }));
+      } else {
+        setProfile((prev) => ({
+          ...prev,
+          followers: prev.followers + 1,
+        }));
+      }
+
+      setIsFollowing((prev) => !prev);
+    } catch (error) {
+      console.error("Error during following:", error);
+    }
+  }
+
   return (
     <div className="pt-20 px-4">
       <motion.div
@@ -24,11 +56,15 @@ export function ProfileDetails({
           <ProfileForm profile={profile} setProfile={setProfile} />
         ) : (
           <motion.button
-            className="bg-custom-2 text-custom-9 rounded-full  text-xl font-bold px-4 py-2"
+            className={`${
+              isFollowing ? "bg-custom-4" : "bg-custom-2"
+            } text-custom-9 rounded-full  text-xl font-bold px-4 py-2`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={toggleFollow}
+            disabled={isLoading}
           >
-            Follow
+            {isLoading ? "Processing..." : isFollowing ? "Unfollow" : "Follow"}
           </motion.button>
         )}
       </motion.div>

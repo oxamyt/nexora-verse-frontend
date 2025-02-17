@@ -2,12 +2,14 @@ export interface AuthState {
   userId: string | null;
 }
 export interface ProfileState {
+  id: number;
   username: string;
   bio: string;
   avatarUrl: string;
   followers: number;
   following: number;
   posts: number;
+  isFollowedByRequester: boolean;
 }
 export interface ProfileContentProps {
   activePostCategory: PostCategories;
