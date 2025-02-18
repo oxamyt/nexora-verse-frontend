@@ -4,6 +4,8 @@ import { ProfileDetailsProps } from "@/types/types";
 import { useFollowMutation } from "@/store/Api";
 import { useState } from "react";
 import { useEffect } from "react";
+import { FollowList } from "./FollowList";
+import { useGetFollowedQuery, useGetFollowersQuery } from "@/store/Api";
 
 export function ProfileDetails({
   profile,
@@ -77,11 +79,19 @@ export function ProfileDetails({
       >
         <div className="flex gap-1">
           <span className="font-bold text-custom-9">{profile.following}</span>
-          <span className="text-custom-5">Following</span>
+          <span className="text-custom-5">
+            {" "}
+            <FollowList
+              query={useGetFollowedQuery}
+              followType={"Followed"}
+            />{" "}
+          </span>
         </div>
         <div className="flex gap-1">
           <span className="font-bold text-custom-9">{profile.followers}</span>
-          <span className="text-custom-5">Followers</span>
+          <span className=" ">
+            <FollowList query={useGetFollowersQuery} followType={"Followers"} />{" "}
+          </span>
         </div>
         <div className="flex gap-1">
           <span className="font-bold text-custom-9">{profile.posts}</span>

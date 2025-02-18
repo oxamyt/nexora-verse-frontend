@@ -13,6 +13,7 @@ export const api = createApi({
       return headers;
     },
   }),
+  tagTypes: ["Followers", "Following", "Profile"],
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (credentials) => ({
@@ -33,6 +34,8 @@ export const api = createApi({
         url: id ? `/users?id=${id}` : "/users",
         method: "GET",
       }),
+      providesTags: (result, error, id) =>
+        id ? [{ type: "Profile", id }] : ["Profile"],
     }),
     updateProfile: builder.mutation({
       query: (credentials) => ({
@@ -40,12 +43,34 @@ export const api = createApi({
         method: "PATCH",
         body: credentials,
       }),
+      invalidatesTags: ["Profile"],
     }),
     follow: builder.mutation({
       query: (id) => ({
         url: `/follows/${id}`,
         method: "PATCH",
       }),
+      invalidatesTags: (result, error, id) => [
+        { type: "Followers", id },
+        { type: "Following", id },
+        { type: "Profile", id },
+        { type: "Following", id: "LIST" },
+        { type: "Profile", id: "LIST" },
+      ],
+    }),
+    getFollowers: builder.query({
+      query: (id) => ({
+        url: `/follows/followers/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "Followers", id }],
+    }),
+    getFollowed: builder.query({
+      query: (id) => ({
+        url: `/follows/followed/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "Following", id }],
     }),
   }),
 });
@@ -56,4 +81,6 @@ export const {
   useProfileQuery,
   useUpdateProfileMutation,
   useFollowMutation,
+  useGetFollowersQuery,
+  useGetFollowedQuery,
 } = api;

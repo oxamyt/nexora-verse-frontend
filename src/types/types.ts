@@ -28,6 +28,17 @@ export interface ProfileFormProps {
   setProfile: (profile: ProfileState) => void;
 }
 
+export interface Follow {
+  id: number;
+  username: string;
+  avatarUrl: string;
+}
+
+export interface FollowListProps {
+  query: (id: number | string) => any;
+  followType: "Followed" | "Followers";
+}
+
 export enum PostCategories {
   POSTS,
   LIKED_POSTS,
