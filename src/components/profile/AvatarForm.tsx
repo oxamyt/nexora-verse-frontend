@@ -1,17 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFormProps } from "@/types/types";
+import { motion } from "motion/react";
 
 export function AvatarForm({
-  previewUrl,
+  previewAvatarUrl,
   profile,
   setAvatarFile,
 }: AvatarFormProps) {
   return (
-    <div className="flex items-center  cursor-pointer justify-center ">
+    <motion.div className="absolute -bottom-8 -left-1">
       <label className="cursor-pointer">
-        <Avatar className="w-32 h-32 border-2 border-custom-4">
+        <Avatar className="w-24 h-24 border-2 border-custom-4">
           <AvatarImage
-            src={previewUrl || profile.avatarUrl}
+            src={previewAvatarUrl || profile.avatarUrl}
             alt="Profile avatar"
           />
           <AvatarFallback>USER</AvatarFallback>
@@ -20,14 +21,12 @@ export function AvatarForm({
           type="file"
           name="avatar"
           accept="image/*"
-          onChange={(e) => {
-            if (e.target.files && e.target.files[0]) {
-              setAvatarFile(e.target.files[0]);
-            }
-          }}
+          onChange={(e) =>
+            e.target.files?.[0] && setAvatarFile(e.target.files[0])
+          }
           className="hidden"
         />
       </label>
-    </div>
+    </motion.div>
   );
 }

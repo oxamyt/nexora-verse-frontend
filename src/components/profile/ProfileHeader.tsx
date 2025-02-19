@@ -1,9 +1,25 @@
 import { motion } from "motion/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function ProfileHeader({ avatarUrl }: { avatarUrl: string }) {
+export function ProfileHeader({
+  avatarUrl,
+  bannerUrl,
+}: {
+  avatarUrl: string;
+  bannerUrl?: string;
+}) {
   return (
-    <div className="h-48 bg-custom-8 relative">
+    <div className="relative">
+      {bannerUrl ? (
+        <img
+          src={bannerUrl}
+          alt="Profile banner"
+          className="h-48 w-full object-cover"
+        />
+      ) : (
+        <div className="h-48 w-full bg-custom-8" />
+      )}
+
       <motion.div
         className="absolute -bottom-16 left-4"
         whileHover={{ scale: 1.1 }}

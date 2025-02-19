@@ -22,6 +22,7 @@ export function Profile() {
     username: "",
     bio: "",
     avatarUrl: "",
+    bannerUrl: "",
     followers: 0,
     following: 0,
     posts: 0,
@@ -35,12 +36,14 @@ export function Profile() {
   const isProfileOwner = Number(userId) === Number(id);
 
   useEffect(() => {
+    console.log(userProfile);
     if (userProfile) {
       setProfile({
         id: userProfile.id,
         username: userProfile.username,
         bio: userProfile.profile.bio,
         avatarUrl: userProfile.avatarUrl || "",
+        bannerUrl: userProfile.profile.bannerUrl || "",
         followers: userProfile._count.followers,
         following: userProfile._count.following,
         posts: userProfile._count.posts,
@@ -64,7 +67,10 @@ export function Profile() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <ProfileHeader avatarUrl={profile.avatarUrl} />
+      <ProfileHeader
+        avatarUrl={profile.avatarUrl}
+        bannerUrl={profile.bannerUrl}
+      />
 
       <ProfileDetails
         profile={profile}

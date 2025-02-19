@@ -27,7 +27,8 @@ import { ProfileState } from "@/types/types";
 import { isErrorData } from "@/types/ErrorDataTypes";
 import { useEffect } from "react";
 import { useUpdateAvatarMutation } from "@/store/Api";
-import { AvatarForm } from "@/components/profile/AvatarForm";
+import { useUpdateBannerMutation } from "@/store/Api";
+import { BannerAvatarForm } from "@/components/profile/BannerAvatarForm";
 
 export function ProfileForm({
   profile,
@@ -38,12 +39,16 @@ export function ProfileForm({
 }) {
   const [open, setOpen] = useState(false);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewBannerUrl, setPreviewBannerUrl] = useState<string | null>(null);
 
   const [updateProfile, { isLoading: isUpdatingProfile, error: profileError }] =
     useUpdateProfileMutation();
   const [updateAvatar, { isLoading: isUpdatingAvatar, error: avatarError }] =
     useUpdateAvatarMutation();
+  const [updateBanner, { isLoading: isUpdatingBanner, error: bannerError }] =
+    useUpdateBannerMutation();
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -55,8 +60,21 @@ export function ProfileForm({
       bio: profile.bio || "",
     });
     setAvatarFile(null);
+    setBannerFile(null);
     setPreviewUrl(null);
+    setPreviewBannerUrl(null);
   }, [profile, form]);
+
+  useEffect(() => {
+    if (bannerFile) {
+      const objectUrl = URL.createObjectURL(bannerFile);
+      setPreviewBannerUrl(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewBannerUrl(null);
+    }
+  }, [bannerFile]);
 
   useEffect(() => {
     if (avatarFile) {
@@ -86,6 +104,16 @@ export function ProfileForm({
         setProfile((prev) => ({
           ...prev,
           avatarUrl: avatarResult?.avatarUrl || prev.avatarUrl,
+        }));
+      }
+
+      if (bannerFile) {
+        const bannerFormData = new FormData();
+        bannerFormData.append("banner", bannerFile);
+        const bannerResult = await updateBanner(bannerFormData).unwrap();
+        setProfile((prev) => ({
+          ...prev,
+          bannerUrl: bannerResult?.bannerUrl || prev.bannerUrl,
         }));
       }
 
@@ -123,22 +151,24 @@ export function ProfileForm({
           Edit Profile
         </motion.button>
       </DialogTrigger>
-      <DialogContent className="bg-custom-3 border-none max-w-full">
+      <DialogContent className="bg-custom-1 border-none ">
         <DialogHeader>
           <DialogTitle className="text-custom-9">Edit Profile</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <motion.form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 text-custom-1 max-w-xl mx-auto p-8"
+            className="space-y-8 text-custom-1 max-w-full mx-auto p-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             encType="multipart/form-data"
           >
-            <AvatarForm
-              previewUrl={previewUrl}
+            <BannerAvatarForm
+              previewBannerUrl={previewBannerUrl}
+              previewAvatarUrl={previewUrl}
               profile={profile}
+              setBannerFile={setBannerFile}
               setAvatarFile={setAvatarFile}
             />
 
@@ -183,7 +213,7 @@ export function ProfileForm({
               )}
             />
 
-            {(profileError || avatarError) && (
+            {(profileError || avatarError || bannerError) && (
               <div className="text-md bg-red-600 text-white p-3 rounded-lg">
                 <p>
                   {profileError &&
@@ -194,6 +224,10 @@ export function ProfileForm({
                     "data" in avatarError &&
                     isErrorData(avatarError.data) &&
                     avatarError.data.error}
+                  {bannerError &&
+                    "data" in bannerError &&
+                    isErrorData(bannerError.data) &&
+                    bannerError.data.error}
                 </p>
               </div>
             )}
@@ -203,7 +237,7 @@ export function ProfileForm({
                 className="bg-custom-2 text-xl font-bold p-8 w-full"
                 type="submit"
               >
-                {isUpdatingProfile || isUpdatingAvatar
+                {isUpdatingProfile || isUpdatingAvatar || isUpdatingBanner
                   ? "Updating profile..."
                   : "Submit ♥‿♥"}
               </Button>

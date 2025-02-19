@@ -53,6 +53,14 @@ export const api = createApi({
       }),
       invalidatesTags: ["Profile"],
     }),
+    updateBanner: builder.mutation({
+      query: (bannerFile) => ({
+        url: "/users/banner",
+        method: "PATCH",
+        body: bannerFile,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
     follow: builder.mutation({
       query: (id) => ({
         url: `/follows/${id}`,
@@ -92,4 +100,5 @@ export const {
   useFollowMutation,
   useGetFollowersQuery,
   useGetFollowedQuery,
+  useUpdateBannerMutation,
 } = api;

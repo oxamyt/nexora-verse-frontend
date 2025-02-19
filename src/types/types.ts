@@ -6,6 +6,7 @@ export interface ProfileState {
   username: string;
   bio: string;
   avatarUrl: string;
+  bannerUrl: string;
   followers: number;
   following: number;
   posts: number;
@@ -40,8 +41,21 @@ export interface FollowListProps {
 }
 
 export interface AvatarFormProps {
-  previewUrl: string | null;
+  previewAvatarUrl: string | null;
   profile: ProfileState;
+  setAvatarFile: React.Dispatch<React.SetStateAction<File | null>>;
+}
+
+export interface BannerFormProps {
+  previewBannerUrl: string | null;
+  profile: ProfileState;
+  setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
+}
+export interface BannerAvatarFormProps {
+  previewBannerUrl: string | null;
+  previewAvatarUrl: string | null;
+  profile: ProfileState;
+  setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
   setAvatarFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
