@@ -39,6 +39,12 @@ export interface FollowListProps {
   followType: "Followed" | "Followers";
 }
 
+export interface AvatarFormProps {
+  previewUrl: string | null;
+  profile: ProfileState;
+  setAvatarFile: React.Dispatch<React.SetStateAction<File | null>>;
+}
+
 export enum PostCategories {
   POSTS,
   LIKED_POSTS,

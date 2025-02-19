@@ -46,6 +46,18 @@ const profileSchema = z
       .max(80, { message: "Bio must not exceed 80 characters." })
       .optional()
       .or(z.literal("")),
+    avatar: z
+      .instanceof(File)
+      .optional()
+      .refine(
+        (file) =>
+          !file ||
+          (file.size <= 5 * 1024 * 1024 &&
+            ["image/jpeg", "image/png", "image/gif"].includes(file.type)),
+        {
+          message: "Avatar must be a JPEG, PNG, or GIF file and less than 5MB.",
+        }
+      ),
   })
   .refine((data) => data.username || data.bio, {
     message: "At least one of 'username' or 'bio' must be provided.",

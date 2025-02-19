@@ -45,6 +45,14 @@ export const api = createApi({
       }),
       invalidatesTags: ["Profile"],
     }),
+    updateAvatar: builder.mutation({
+      query: (avatarFile) => ({
+        url: "/users/avatar",
+        method: "PATCH",
+        body: avatarFile,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
     follow: builder.mutation({
       query: (id) => ({
         url: `/follows/${id}`,
@@ -79,6 +87,7 @@ export const {
   useSignUpMutation,
   useLoginMutation,
   useProfileQuery,
+  useUpdateAvatarMutation,
   useUpdateProfileMutation,
   useFollowMutation,
   useGetFollowersQuery,

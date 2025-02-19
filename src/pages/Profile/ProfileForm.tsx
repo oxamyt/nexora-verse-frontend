@@ -26,6 +26,8 @@ import { useUpdateProfileMutation } from "@/store/Api";
 import { ProfileState } from "@/types/types";
 import { isErrorData } from "@/types/ErrorDataTypes";
 import { useEffect } from "react";
+import { useUpdateAvatarMutation } from "@/store/Api";
+import { AvatarForm } from "@/components/profile/AvatarForm";
 
 export function ProfileForm({
   profile,
@@ -34,9 +36,14 @@ export function ProfileForm({
   profile: ProfileState;
   setProfile: React.Dispatch<React.SetStateAction<ProfileState>>;
 }) {
-  const [updateProfile, { isLoading, error }] = useUpdateProfileMutation();
-
   const [open, setOpen] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const [updateProfile, { isLoading: isUpdatingProfile, error: profileError }] =
+    useUpdateProfileMutation();
+  const [updateAvatar, { isLoading: isUpdatingAvatar, error: avatarError }] =
+    useUpdateAvatarMutation();
 
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -47,7 +54,20 @@ export function ProfileForm({
       username: profile.username || "",
       bio: profile.bio || "",
     });
+    setAvatarFile(null);
+    setPreviewUrl(null);
   }, [profile, form]);
+
+  useEffect(() => {
+    if (avatarFile) {
+      const objectUrl = URL.createObjectURL(avatarFile);
+      setPreviewUrl(objectUrl);
+
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [avatarFile]);
 
   async function onSubmit(values: z.infer<typeof profileSchema>) {
     const updates: Partial<z.infer<typeof profileSchema>> = {};
@@ -57,12 +77,22 @@ export function ProfileForm({
     updates.bio = values.bio;
 
     try {
-      const result = await updateProfile(updates).unwrap();
+      const updateResult = await updateProfile(updates).unwrap();
+
+      if (avatarFile) {
+        const formData = new FormData();
+        formData.append("avatar", avatarFile);
+        const avatarResult = await updateAvatar(formData).unwrap();
+        setProfile((prev) => ({
+          ...prev,
+          avatarUrl: avatarResult?.avatarUrl || prev.avatarUrl,
+        }));
+      }
 
       setProfile((prev) => ({
         ...prev,
-        username: result.updatedUser?.username ?? prev.username,
-        bio: result.updatedProfile?.bio ?? prev.bio,
+        username: updateResult.updatedUser?.username ?? prev.username,
+        bio: updateResult.updatedProfile?.bio ?? prev.bio,
       }));
 
       setOpen(false);
@@ -81,6 +111,7 @@ export function ProfileForm({
             username: profile.username || "",
             bio: profile.bio || "",
           });
+        setAvatarFile(null);
       }}
     >
       <DialogTrigger asChild>
@@ -103,7 +134,14 @@ export function ProfileForm({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
+            encType="multipart/form-data"
           >
+            <AvatarForm
+              previewUrl={previewUrl}
+              profile={profile}
+              setAvatarFile={setAvatarFile}
+            />
+
             <FormField
               control={form.control}
               name="username"
@@ -145,9 +183,18 @@ export function ProfileForm({
               )}
             />
 
-            {error && "data" in error && isErrorData(error.data) && (
-              <div className="text-md bg-red-600  text-white p-3 rounded-lg">
-                <p>{error.data.error}</p>
+            {(profileError || avatarError) && (
+              <div className="text-md bg-red-600 text-white p-3 rounded-lg">
+                <p>
+                  {profileError &&
+                    "data" in profileError &&
+                    isErrorData(profileError.data) &&
+                    profileError.data.error}
+                  {avatarError &&
+                    "data" in avatarError &&
+                    isErrorData(avatarError.data) &&
+                    avatarError.data.error}
+                </p>
               </div>
             )}
 
@@ -156,7 +203,9 @@ export function ProfileForm({
                 className="bg-custom-2 text-xl font-bold p-8 w-full"
                 type="submit"
               >
-                {isLoading ? "Updating profile..." : "Submit ♥‿♥"}
+                {isUpdatingProfile || isUpdatingAvatar
+                  ? "Updating profile..."
+                  : "Submit ♥‿♥"}
               </Button>
             </motion.div>
           </motion.form>
