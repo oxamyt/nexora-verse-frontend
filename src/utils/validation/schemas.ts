@@ -64,4 +64,17 @@ const profileSchema = z
     path: ["username", "bio"],
   });
 
-export { signUpSchema, loginSchema, profileSchema };
+const postSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(1, { message: "Title must be at least 1 characters long." })
+    .max(30, { message: "Title must not exceed 30 characters." }),
+  body: z
+    .string()
+    .min(1, { message: "Body must be at least 1 characters long." })
+    .max(300, { message: "Body must not exceed 300 characters." })
+    .optional(),
+});
+
+export { signUpSchema, loginSchema, profileSchema, postSchema };

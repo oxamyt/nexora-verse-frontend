@@ -24,6 +24,7 @@ export default {
           8: "#1E2936",
           9: "#F1F3F5",
           10: "#3FA318",
+          11: "#2E4052",
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

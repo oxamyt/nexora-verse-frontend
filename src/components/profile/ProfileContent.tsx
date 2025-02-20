@@ -1,11 +1,22 @@
 import { motion } from "motion/react";
 import { ProfileContentProps } from "@/types/types";
+import { useGetPostsByUserIdQuery } from "@/store/Api";
+import { useParams } from "react-router-dom";
+import { PostCard } from "../post/PostCard";
+import { Post } from "@/types/types";
 
 export function ProfileContent({
   activePostCategory,
   setActivePostCategory,
   PostCategories,
 }: ProfileContentProps) {
+  const { id } = useParams();
+  const {
+    data: posts,
+    isLoading: postsLoading,
+    error: postsError,
+  } = useGetPostsByUserIdQuery(id);
+  console.log(posts);
   return (
     <>
       <div className="flex justify-around">
@@ -34,6 +45,30 @@ export function ProfileContent({
           Liked Posts
         </motion.button>
       </div>
+
+      {activePostCategory === PostCategories.POSTS && (
+        <div className="mt-4">
+          {postsLoading ? (
+            <div>Loading posts...</div>
+          ) : postsError ? (
+            <div>Error loading posts.</div>
+          ) : posts && posts.length > 0 ? (
+            posts.map((post: Post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                user={{
+                  id: post.User.id,
+                  username: post.User.username,
+                  avatarUrl: post.User.avatarUrl,
+                }}
+              />
+            ))
+          ) : (
+            <div>No posts available</div>
+          )}
+        </div>
+      )}
     </>
   );
 }

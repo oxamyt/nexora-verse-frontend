@@ -59,6 +59,27 @@ export interface BannerAvatarFormProps {
   setAvatarFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
+interface User {
+  id: number;
+  username: string;
+  avatarUrl: string;
+}
+
+export interface Post {
+  User: User;
+  id: number;
+  title: string;
+  body?: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostCardProps {
+  post: Post;
+  user: User;
+}
+
 export enum PostCategories {
   POSTS,
   LIKED_POSTS,

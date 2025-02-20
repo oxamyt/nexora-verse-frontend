@@ -12,7 +12,7 @@ export function Navbar() {
 
   return (
     <motion.nav
-      className="bg-custom-1 border-t border-custom-5 mx-auto px-4 py-3 items-center fixed bottom-0 w-full "
+      className="bg-custom-1 border-t border-custom-11 mx-auto px-4 py-3 items-center fixed bottom-0 w-full "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

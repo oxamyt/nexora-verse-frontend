@@ -12,6 +12,7 @@ import { ProfileDetails } from "@/components/profile/ProfileDetails";
 import { ProfileState } from "@/types/types";
 import { PostCategories } from "@/types/types";
 import { ProfileContent } from "@/components/profile/ProfileContent";
+import { PostForm } from "@/components/post/PostForm";
 
 export function Profile() {
   const [activePostCategory, setActivePostCategory] = useState<PostCategories>(
@@ -36,7 +37,6 @@ export function Profile() {
   const isProfileOwner = Number(userId) === Number(id);
 
   useEffect(() => {
-    console.log(userProfile);
     if (userProfile) {
       setProfile({
         id: userProfile.id,
@@ -94,6 +94,8 @@ export function Profile() {
           PostCategories={PostCategories}
         />
       </motion.div>
+
+      <PostForm />
     </motion.div>
   );
 }

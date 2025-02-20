@@ -13,7 +13,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Followers", "Following", "Profile"],
+  tagTypes: ["Followers", "Following", "Profile", "Posts"],
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (credentials) => ({
@@ -88,6 +88,21 @@ export const api = createApi({
       }),
       providesTags: (result, error, id) => [{ type: "Following", id }],
     }),
+    createPost: builder.mutation({
+      query: (data) => ({
+        url: "/posts",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: (result) => [{ type: "Posts", id: result?.userId }],
+    }),
+    getPostsByUserId: builder.query({
+      query: (userId) => ({
+        url: `/posts/${userId}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, userId) => [{ type: "Posts", id: userId }],
+    }),
   }),
 });
 
@@ -101,4 +116,6 @@ export const {
   useGetFollowersQuery,
   useGetFollowedQuery,
   useUpdateBannerMutation,
+  useCreatePostMutation,
+  useGetPostsByUserIdQuery,
 } = api;
