@@ -1,7 +1,30 @@
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/authSlice";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Home() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const token = params.get("token");
+    const userId = params.get("userId");
+
+    if (token && userId) {
+      localStorage.setItem("token", token);
+      dispatch(setUser(userId));
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      navigate(`/profile/${userId}`);
+    }
+  }, []);
+
   return (
     <div className="flex flex-col gap-2 items-center justify-center min-h-screen bg-custom-1">
       <motion.img
@@ -35,6 +58,20 @@ export default function Home() {
         >
           Login
         </Link>
+      </motion.div>
+      <p className="flex items-center w-64 text-custom-9 font-bold my-2">
+        <span className="flex-1 border-t border-custom-9"></span>
+        <span className="px-4">or</span>
+        <span className="flex-1 border-t border-custom-9"></span>
+      </p>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+        <a
+          href={`${API}/auth/github`}
+          className="bg-custom-9 py-3 text-custom-3 text-lg font-bold   rounded-lg  text-center w-64 flex items-center justify-center gap-2 hover:text-custom-9 hover:bg-custom-3"
+        >
+          <FaGithub className="w-8 h-8" />
+          Sign up with Github
+        </a>
       </motion.div>
     </div>
   );

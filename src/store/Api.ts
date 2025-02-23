@@ -100,6 +100,7 @@ export const api = createApi({
       query: (userId) => ({
         url: `/posts/${userId}`,
         method: "GET",
+        refetchOnMountOrArgChange: true,
       }),
       providesTags: (result, error, userId) => [{ type: "Posts", id: userId }],
     }),

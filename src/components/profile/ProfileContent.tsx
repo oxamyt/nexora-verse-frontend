@@ -4,6 +4,7 @@ import { useGetPostsByUserIdQuery } from "@/store/Api";
 import { useParams } from "react-router-dom";
 import { PostCard } from "../post/PostCard";
 import { Post } from "@/types/types";
+import { SkeletonPostCard } from "@/features/skeletonCards/SkeletonPost";
 
 export function ProfileContent({
   activePostCategory,
@@ -15,8 +16,9 @@ export function ProfileContent({
     data: posts,
     isLoading: postsLoading,
     error: postsError,
+    isFetching,
   } = useGetPostsByUserIdQuery(id);
-  console.log(posts);
+
   return (
     <>
       <div className="flex justify-around">
@@ -48,8 +50,12 @@ export function ProfileContent({
 
       {activePostCategory === PostCategories.POSTS && (
         <div className="mt-4">
-          {postsLoading ? (
-            <div>Loading posts...</div>
+          {postsLoading || isFetching ? (
+            <div className="animate-pulse space-y-4">
+              {[...Array(5)].map((_, index) => (
+                <SkeletonPostCard key={index} />
+              ))}
+            </div>
           ) : postsError ? (
             <div>Error loading posts.</div>
           ) : posts && posts.length > 0 ? (
@@ -65,7 +71,7 @@ export function ProfileContent({
               />
             ))
           ) : (
-            <div>No posts available</div>
+            <div></div>
           )}
         </div>
       )}
