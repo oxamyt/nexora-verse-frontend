@@ -2,13 +2,17 @@ import { expect, describe, it, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter as Router } from "react-router-dom";
 import Home from "@/pages/Home/Home";
+import { store } from "@/store/store";
+import { Provider } from "react-redux";
 
 describe("Home Component", () => {
   beforeEach(() => {
     render(
-      <Router>
-        <Home />
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Home />
+        </Router>
+      </Provider>
     );
   });
 

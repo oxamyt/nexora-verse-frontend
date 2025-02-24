@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { postSchema } from "@/utils/validation/schemas";
 import { IoCreateOutline } from "react-icons/io5";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { useCreatePostMutation } from "@/store/Api";
 
 export function PostForm() {
@@ -31,8 +31,7 @@ export function PostForm() {
     defaultValues: { body: "", title: "" },
   });
 
-  const [createPost, { isLoading, postError }] = useCreatePostMutation();
-
+  const [createPost, { isLoading }] = useCreatePostMutation();
   async function onSubmit(values: { title: string; body: string }) {
     try {
       const result = await createPost(values).unwrap();

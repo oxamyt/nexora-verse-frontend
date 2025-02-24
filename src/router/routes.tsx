@@ -6,6 +6,8 @@ import { Outlet } from "react-router-dom";
 import { ProfileLayout } from "@/pages/Profile/ProfileLayout";
 import { Profile } from "@/pages/Profile/Profile";
 import Home from "@/pages/Home/Home";
+import { PostPage } from "@/pages/Post/PostPage";
+import { PostLayout } from "@/pages/Post/PostLayout";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,15 @@ const router = createBrowserRouter([
         <Profile />
       </ProfileLayout>
     ),
+  },
+  {
+    path: "/posts",
+    element: (
+      <PostLayout>
+        <Outlet />
+      </PostLayout>
+    ),
+    children: [{ path: ":postId", element: <PostPage /> }],
   },
 ]);
 
