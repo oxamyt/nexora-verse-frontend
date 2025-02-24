@@ -34,9 +34,8 @@ export function PostForm() {
   const [createPost, { isLoading }] = useCreatePostMutation();
   async function onSubmit(values: { title: string; body: string }) {
     try {
-      const result = await createPost(values).unwrap();
+      await createPost(values).unwrap();
 
-      console.log(result);
       setOpen(false);
       form.reset();
     } catch (error) {

@@ -122,6 +122,16 @@ export const api = createApi({
         { type: "Posts", id: result?.userId },
       ],
     }),
+    deletePost: builder.mutation({
+      query: (postId) => ({
+        url: `/posts/${postId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Post", id },
+        { type: "Posts", id: result?.userId },
+      ],
+    }),
   }),
 });
 
@@ -139,4 +149,5 @@ export const {
   useGetPostsByUserIdQuery,
   useGetPostByIdQuery,
   useUpdatePostMutation,
+  useDeletePostMutation,
 } = api;

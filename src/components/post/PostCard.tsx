@@ -2,11 +2,11 @@ import { PostCardProps } from "@/types/types";
 import { motion } from "motion/react";
 import { CiHeart } from "react-icons/ci";
 import { FaRegCommentAlt } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { EditPostForm } from "@/components/post/EditPostForm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Link } from "react-router-dom";
+import { DeletePostButton } from "./DeletePostButton";
 
 export function PostCard({ post, user }: PostCardProps) {
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -60,7 +60,7 @@ export function PostCard({ post, user }: PostCardProps) {
             {Number(userId) === Number(post.User.id) && (
               <div className="flex items-center gap-5">
                 <EditPostForm post={post} />
-                <RiDeleteBin6Line className="w-8 h-8 text-custom-5 cursor-pointer" />
+                <DeletePostButton postId={post.id} />
               </div>
             )}
           </div>

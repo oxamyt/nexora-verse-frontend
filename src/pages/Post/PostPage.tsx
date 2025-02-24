@@ -6,8 +6,8 @@ import { motion } from "motion/react";
 import { useGetPostByIdQuery } from "@/store/Api";
 import { CiHeart } from "react-icons/ci";
 import { FaRegCommentAlt } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { EditPostForm } from "@/components/post/EditPostForm";
+import { DeletePostButton } from "@/components/post/DeletePostButton";
 
 export function PostPage() {
   const { postId } = useParams();
@@ -70,7 +70,7 @@ export function PostPage() {
             {Number(userId) === Number(post.User.id) && (
               <div className="flex items-center justify-start  gap-5 ">
                 <EditPostForm post={post} />
-                <RiDeleteBin6Line className="w-8 h-8 text-custom-5" />
+                <DeletePostButton postId={post.id} />
               </div>
             )}
           </div>
