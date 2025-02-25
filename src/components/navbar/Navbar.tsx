@@ -18,7 +18,7 @@ export function Navbar() {
       transition={{ duration: 1 }}
     >
       <div className="flex justify-around space-x-8">
-        <Link to="/home" className="text-white ">
+        <Link to="/live" className="text-white ">
           <GoHomeFill className="w-8 h-8" />
         </Link>
         <Link to="/search" className="text-white ">

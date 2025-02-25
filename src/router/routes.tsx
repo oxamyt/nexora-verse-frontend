@@ -8,6 +8,8 @@ import { Profile } from "@/pages/Profile/Profile";
 import Home from "@/pages/Home/Home";
 import { PostPage } from "@/pages/Post/PostPage";
 import { PostLayout } from "@/pages/Post/PostLayout";
+import { FeedLayout } from "@/pages/Feed/FeedLayout";
+import { Feed } from "@/pages/Feed/Feed";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
       </PostLayout>
     ),
     children: [{ path: ":postId", element: <PostPage /> }],
+  },
+  {
+    path: "/live",
+    element: (
+      <FeedLayout>
+        <Feed />
+      </FeedLayout>
+    ),
   },
 ]);
 

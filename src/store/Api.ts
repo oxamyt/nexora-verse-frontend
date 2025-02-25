@@ -72,6 +72,7 @@ export const api = createApi({
         { type: "Profile", id },
         { type: "Following", id: "LIST" },
         { type: "Profile", id: "LIST" },
+        { type: "Posts", id: "LIST" },
       ],
     }),
     getFollowers: builder.query({
@@ -120,6 +121,7 @@ export const api = createApi({
       invalidatesTags: (result, error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
+        { type: "Posts", id: "LIST" },
       ],
     }),
     deletePost: builder.mutation({
@@ -130,7 +132,22 @@ export const api = createApi({
       invalidatesTags: (result, error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
+        { type: "Posts", id: "LIST" },
       ],
+    }),
+    getRecentPosts: builder.query({
+      query: () => ({
+        url: "/posts/",
+        method: "GET",
+      }),
+      providesTags: [{ type: "Posts", id: "LIST" }],
+    }),
+    getFollowingPosts: builder.query({
+      query: () => ({
+        url: "/posts/following",
+        method: "GET",
+      }),
+      providesTags: [{ type: "Posts", id: "LIST" }],
     }),
   }),
 });
@@ -150,4 +167,6 @@ export const {
   useGetPostByIdQuery,
   useUpdatePostMutation,
   useDeletePostMutation,
+  useGetRecentPostsQuery,
+  useGetFollowingPostsQuery,
 } = api;

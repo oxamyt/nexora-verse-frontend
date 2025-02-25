@@ -27,7 +27,12 @@ export function PostCard({ post, user }: PostCardProps) {
 
         <div className="w-full">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-custom-9">{user.username}</span>
+            <Link
+              to={`/profile/${user.id}`}
+              className="font-semibold text-custom-9"
+            >
+              {user.username}
+            </Link>
             <span className="text-custom-5 text-sm">·</span>
             {post.createdAt && (
               <span className="text-custom-5 text-sm">

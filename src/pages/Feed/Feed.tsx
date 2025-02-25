@@ -1,0 +1,121 @@
+import { useGetRecentPostsQuery, useGetFollowingPostsQuery } from "@/store/Api";
+import { motion } from "motion/react";
+import { FeedPostCategories } from "@/types/types";
+import { useState } from "react";
+import { SkeletonPostCard } from "@/features/skeletonCards/SkeletonPost";
+import { Post } from "@/types/types";
+import { PostCard } from "@/components/post/PostCard";
+
+export function Feed() {
+  const {
+    data: recentPosts,
+    isLoading: isLoadingRecent,
+    isFetching: isFetchingRecent,
+    error: errorRecent,
+  } = useGetRecentPostsQuery({});
+
+  const {
+    data: followingPosts,
+    isLoading: isLoadingFollowing,
+    isFetching: isFetchingFollowing,
+    error: errorFollowing,
+  } = useGetFollowingPostsQuery({});
+
+  const [activePostCategory, setActivePostCategory] =
+    useState<FeedPostCategories>(FeedPostCategories.RECENT_POSTS);
+
+  const isLoading =
+    activePostCategory === FeedPostCategories.RECENT_POSTS
+      ? isLoadingRecent || isFetchingRecent
+      : isLoadingFollowing || isFetchingFollowing;
+
+  const error =
+    activePostCategory === FeedPostCategories.RECENT_POSTS
+      ? errorRecent
+      : errorFollowing;
+
+  return (
+    <>
+      <div className="flex justify-around">
+        <motion.button
+          className={`px-4 py-4 font-bold ${
+            activePostCategory === FeedPostCategories.RECENT_POSTS
+              ? " text-custom-9 border-b"
+              : "text-custom-5 hover:text-black"
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActivePostCategory(FeedPostCategories.RECENT_POSTS)}
+        >
+          Recent Posts
+        </motion.button>
+        <motion.button
+          className={`px-4 py-4 font-bold ${
+            activePostCategory === FeedPostCategories.FOLLOWING_POSTS
+              ? " text-custom-9 border-b"
+              : "text-custom-5 hover:text-black"
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() =>
+            setActivePostCategory(FeedPostCategories.FOLLOWING_POSTS)
+          }
+        >
+          Following
+        </motion.button>
+      </div>
+
+      <div className="mt-4">
+        {isLoading ? (
+          <div className="animate-pulse space-y-4">
+            {[...Array(5)].map((_, index) => (
+              <SkeletonPostCard key={index} />
+            ))}
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center text-white font-bold">
+            Error loading posts.
+          </div>
+        ) : (
+          <>
+            {activePostCategory === FeedPostCategories.RECENT_POSTS ? (
+              recentPosts && recentPosts.length > 0 ? (
+                recentPosts.map((post: Post) => (
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    user={{
+                      id: post.User.id,
+                      username: post.User.username,
+                      avatarUrl: post.User.avatarUrl,
+                    }}
+                  />
+                ))
+              ) : (
+                <div className="flex items-center justify-center text-white font-bold">
+                  No recent posts.
+                </div>
+              )
+            ) : followingPosts && followingPosts.length > 0 ? (
+              followingPosts.map((post: Post) => (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  user={{
+                    id: post.User.id,
+                    username: post.User.username,
+                    avatarUrl: post.User.avatarUrl,
+                  }}
+                />
+              ))
+            ) : (
+              <div className="flex items-center justify-center text-white font-bold">
+                No posts from followed users.
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
+  );
+}

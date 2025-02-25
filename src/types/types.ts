@@ -84,3 +84,8 @@ export enum PostCategories {
   POSTS,
   LIKED_POSTS,
 }
+
+export enum FeedPostCategories {
+  RECENT_POSTS,
+  FOLLOWING_POSTS,
+}
