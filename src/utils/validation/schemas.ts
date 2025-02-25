@@ -77,4 +77,18 @@ const postSchema = z.object({
     .optional(),
 });
 
-export { signUpSchema, loginSchema, profileSchema, postSchema };
+const searchUsernameSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, { message: "Title must be at least 3 characters long." })
+    .max(15, { message: "Title must not exceed 15 characters." }),
+});
+
+export {
+  signUpSchema,
+  loginSchema,
+  profileSchema,
+  postSchema,
+  searchUsernameSchema,
+};

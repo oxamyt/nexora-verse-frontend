@@ -149,6 +149,12 @@ export const api = createApi({
       }),
       providesTags: [{ type: "Posts", id: "LIST" }],
     }),
+    getByUsername: builder.query({
+      query: (username) => ({
+        url: `/users/?username=${username}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -169,4 +175,5 @@ export const {
   useDeletePostMutation,
   useGetRecentPostsQuery,
   useGetFollowingPostsQuery,
+  useLazyGetByUsernameQuery,
 } = api;

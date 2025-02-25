@@ -10,6 +10,8 @@ import { PostPage } from "@/pages/Post/PostPage";
 import { PostLayout } from "@/pages/Post/PostLayout";
 import { FeedLayout } from "@/pages/Feed/FeedLayout";
 import { Feed } from "@/pages/Feed/Feed";
+import { SearchLayout } from "@/pages/Search/SearchLayout";
+import { Search } from "@/pages/Search/Search";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
       <FeedLayout>
         <Feed />
       </FeedLayout>
+    ),
+  },
+  {
+    path: "/search",
+    element: (
+      <SearchLayout>
+        <Search />
+      </SearchLayout>
     ),
   },
 ]);
