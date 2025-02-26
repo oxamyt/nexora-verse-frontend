@@ -81,8 +81,8 @@ const searchUsernameSchema = z.object({
   username: z
     .string()
     .trim()
-    .min(3, { message: "Title must be at least 3 characters long." })
-    .max(15, { message: "Title must not exceed 15 characters." }),
+    .min(3, { message: "Username must be at least 3 characters long." })
+    .max(15, { message: "Username must not exceed 15 characters." }),
 });
 
 export {
