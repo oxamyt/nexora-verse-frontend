@@ -23,28 +23,40 @@ export function ProfileContent({
     <>
       <div className="flex justify-around">
         <motion.button
-          className={`px-4 py-4 font-bold ${
+          className={`px-4 py-4 font-bold  relative ${
             activePostCategory === PostCategories.POSTS
-              ? " text-custom-9 border-b"
-              : "text-custom-5 hover:text-black"
+              ? " text-custom-9 "
+              : "text-custom-5 "
           }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setActivePostCategory(PostCategories.POSTS)}
         >
           My Posts
+          {activePostCategory === PostCategories.POSTS && (
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 h-1 bg-custom-2"
+              layoutId="profile-underline"
+            />
+          )}
         </motion.button>
         <motion.button
-          className={`px-4 py-4 font-bold ${
+          className={`px-4 py-4 font-bold relative ${
             activePostCategory === PostCategories.LIKED_POSTS
-              ? " text-custom-9 border-b"
-              : "text-custom-5 hover:text-black"
+              ? " text-custom-9 "
+              : "text-custom-5 "
           }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setActivePostCategory(PostCategories.LIKED_POSTS)}
         >
           Liked Posts
+          {activePostCategory === PostCategories.LIKED_POSTS && (
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 h-1 bg-custom-2"
+              layoutId="profile-underline"
+            />
+          )}
         </motion.button>
       </div>
 
