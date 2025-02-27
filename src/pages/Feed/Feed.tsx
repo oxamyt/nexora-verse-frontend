@@ -139,7 +139,7 @@ export function Feed() {
                   />
                 ))
               ) : (
-                <div className="flex items-center justify-center text-white font-bold">
+                <div className="flex items-center justify-center pt-10 text-white font-bold">
                   No recent posts.
                 </div>
               )
@@ -156,7 +156,7 @@ export function Feed() {
                 />
               ))
             ) : (
-              <div className="flex items-center justify-center text-white font-bold">
+              <div className="flex items-center justify-center pt-10 text-white font-bold">
                 No posts from followed users.
               </div>
             )}
