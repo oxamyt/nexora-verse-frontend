@@ -78,8 +78,14 @@ export function Search() {
       <div className="min-h-40">
         {isFetching ? (
           <div className="space-y-4">
-            <Skeleton className="h-16 w-full bg-custom-3 rounded-lg" />
-            <Skeleton className="h-4 w-2/3 bg-custom-3 rounded-lg" />
+            <Skeleton
+              data-testid="loading-skeleton"
+              className="h-16 w-full bg-custom-3 rounded-lg"
+            />
+            <Skeleton
+              data-testid
+              className="h-4 w-2/3 bg-custom-3 rounded-lg"
+            />
           </div>
         ) : error ? (
           <motion.div

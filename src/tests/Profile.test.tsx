@@ -67,13 +67,13 @@ describe("Profile Page", () => {
     const postsTab = screen.getByRole("button", { name: /my posts/i });
     const likedPostsTab = screen.getByRole("button", { name: /liked posts/i });
 
-    expect(postsTab).toHaveClass("px-4 py-4 font-bold text-custom-9 border-b");
+    expect(postsTab).toHaveClass("px-4 py-4 font-bold relative text-custom-9");
     expect(likedPostsTab).not.toHaveClass("border-b-2 border-black");
 
     await userEvent.click(likedPostsTab);
 
     expect(likedPostsTab).toHaveClass(
-      "px-4 py-4 font-bold text-custom-9 border-b"
+      "px-4 py-4 font-bold relative text-custom-9"
     );
     expect(postsTab).not.toHaveClass("border-b-2 border-black");
   });
