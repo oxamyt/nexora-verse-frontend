@@ -64,8 +64,18 @@ export function PostPage() {
 
           <div className="flex items-center justify-between gap-5 mt-4 pt-4 mr-4 ">
             <div className="flex items-center justify-start gap-8 ">
-              <FaRegCommentAlt className="w-7 h-7 text-custom-5" />
-              <CiHeart className="w-10 h-10 text-custom-5" />
+              <div className="flex items-center justify-center gap-2 ">
+                <FaRegCommentAlt className="w-7 h-7 text-custom-5 cursor-pointer" />
+                <p className="font-bold text-custom-5 text-2xl">
+                  {post._count.comments}
+                </p>
+              </div>
+              <div className="flex items-center justify-center gap-2 ">
+                <CiHeart className="w-10 h-10 text-custom-5 cursor-pointer" />
+                <p className="font-bold text-custom-5 text-2xl">
+                  {post._count.likes}
+                </p>
+              </div>
             </div>
             {Number(userId) === Number(post.User.id) && (
               <div className="flex items-center justify-start  gap-5 ">

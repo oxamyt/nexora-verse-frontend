@@ -135,6 +135,16 @@ export const api = createApi({
         { type: "Posts", id: "LIST" },
       ],
     }),
+    likePost: builder.mutation({
+      query: (postId) => ({
+        url: `/likes/post/${postId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (result, error, postId) => [
+        { type: "Post", id: postId },
+        { type: "Posts", id: "LIST" },
+      ],
+    }),
     getRecentPosts: builder.query({
       query: () => ({
         url: "/posts/",
@@ -176,4 +186,5 @@ export const {
   useGetRecentPostsQuery,
   useGetFollowingPostsQuery,
   useLazyGetByUsernameQuery,
+  useLikePostMutation,
 } = api;

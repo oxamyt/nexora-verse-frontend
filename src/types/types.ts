@@ -73,6 +73,17 @@ export interface Post {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  _count: PostCounts;
+  likes: Like[];
+}
+
+interface Like {
+  userId: number;
+}
+
+interface PostCounts {
+  likes: number;
+  comments: number;
 }
 
 export interface PostCardProps {

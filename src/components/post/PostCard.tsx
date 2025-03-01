@@ -7,9 +7,34 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { Link } from "react-router-dom";
 import { DeletePostButton } from "./DeletePostButton";
+import { useLikePostMutation } from "@/store/Api";
+import { useState } from "react";
 
 export function PostCard({ post, user }: PostCardProps) {
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const [likePost] = useLikePostMutation();
+  const [isLiked, setIsLiked] = useState(
+    post.likes.some((like) => like.userId === Number(userId))
+  );
+  const [likeCount, setLikeCount] = useState(post._count.likes);
+
+  async function submitLike(postId: number) {
+    const previousIsLiked = isLiked;
+    const previousLikeCount = likeCount;
+
+    setIsLiked(!previousIsLiked);
+    setLikeCount(
+      previousIsLiked ? previousLikeCount - 1 : previousLikeCount + 1
+    );
+
+    try {
+      await likePost(postId).unwrap();
+    } catch (error) {
+      setIsLiked(previousIsLiked);
+      setLikeCount(previousLikeCount);
+      console.error("Error during liking post:", error);
+    }
+  }
 
   return (
     <motion.div
@@ -56,10 +81,27 @@ export function PostCard({ post, user }: PostCardProps) {
 
           <div className="flex items-center justify-between gap-5 mt-4 pt-4">
             <div className="flex items-center gap-8">
-              <Link to={`/posts/${post.id}`}>
+              <Link
+                className="flex items-center justify-center gap-2 "
+                to={`/posts/${post.id}`}
+              >
                 <FaRegCommentAlt className="w-6 h-6 text-custom-5 cursor-pointer" />
+                <p className="font-bold text-custom-5 text-2xl">
+                  {post._count.comments}
+                </p>
               </Link>
-              <CiHeart className="w-9 h-9 text-custom-5 cursor-pointer" />
+              <div className="flex items-center justify-center gap-2">
+                <motion.div transition={{ duration: 0.3 }}>
+                  <CiHeart
+                    onClick={() => submitLike(post.id)}
+                    className={`w-9 h-9 ${
+                      isLiked ? "text-red-500" : "text-custom-5"
+                    } cursor-pointer`}
+                  />
+                </motion.div>
+
+                <p className="font-bold text-custom-5 text-2xl">{likeCount}</p>
+              </div>
             </div>
 
             {Number(userId) === Number(post.User.id) && (
