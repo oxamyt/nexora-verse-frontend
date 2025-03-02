@@ -183,6 +183,13 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+    createComment: builder.mutation({
+      query: (data) => ({
+        url: `/comments/${data.postId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -206,4 +213,5 @@ export const {
   useLazyGetByUsernameQuery,
   useLikePostMutation,
   useGetLikedPostsQuery,
+  useCreateCommentMutation,
 } = api;

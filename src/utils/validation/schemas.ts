@@ -85,10 +85,18 @@ const searchUsernameSchema = z.object({
     .max(15, { message: "Username must not exceed 15 characters." }),
 });
 
+const CommentSchema = z.object({
+  content: z
+    .string()
+    .min(1, { message: "Body must be at least 1 characters long." })
+    .max(200, { message: "Body must not exceed 200 characters." }),
+});
+
 export {
   signUpSchema,
   loginSchema,
   profileSchema,
   postSchema,
   searchUsernameSchema,
+  CommentSchema,
 };

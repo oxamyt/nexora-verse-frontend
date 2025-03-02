@@ -11,6 +11,7 @@ import { EditPostForm } from "@/components/post/EditPostForm";
 import { DeletePostButton } from "@/components/post/DeletePostButton";
 import { FaHeart } from "react-icons/fa";
 import { Like } from "@/types/types";
+import { CommentsForm } from "@/components/comment/CommentsForm";
 
 export function PostPage() {
   const { postId } = useParams();
@@ -134,6 +135,7 @@ export function PostPage() {
               </div>
             )}
           </div>
+          <CommentsForm postId={post.id} />
         </div>
       </div>
     </motion.div>
