@@ -3,16 +3,52 @@ import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { SkeletonPostCard } from "@/features/skeletonCards/SkeletonPost";
 import { motion } from "motion/react";
-import { useGetPostByIdQuery } from "@/store/Api";
+import { useGetPostByIdQuery, useLikePostMutation } from "@/store/Api";
+import { useState, useEffect } from "react";
 import { CiHeart } from "react-icons/ci";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { EditPostForm } from "@/components/post/EditPostForm";
 import { DeletePostButton } from "@/components/post/DeletePostButton";
+import { FaHeart } from "react-icons/fa";
+import { Like } from "@/types/types";
 
 export function PostPage() {
   const { postId } = useParams();
   const { data: post, isLoading, isFetching } = useGetPostByIdQuery(postId!);
+
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const [likePost] = useLikePostMutation();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+
+  useEffect(() => {
+    if (post) {
+      setIsLiked(
+        post.likes.some((like: Like) => like.userId === Number(userId))
+      );
+      setLikeCount(post._count.likes);
+    }
+  }, [post, userId]);
+
+  console.log(post);
+
+  async function submitLike(postId: number) {
+    const previousIsLiked = isLiked;
+    const previousLikeCount = likeCount;
+
+    setIsLiked(!previousIsLiked);
+    setLikeCount(
+      previousIsLiked ? previousLikeCount - 1 : previousLikeCount + 1
+    );
+
+    try {
+      await likePost(postId).unwrap();
+    } catch (error) {
+      setIsLiked(previousIsLiked);
+      setLikeCount(previousLikeCount);
+      console.error("Error during liking post:", error);
+    }
+  }
 
   if (isLoading || isFetching) return <SkeletonPostCard />;
   if (!post) return <div>Post not found</div>;
@@ -71,10 +107,24 @@ export function PostPage() {
                 </p>
               </div>
               <div className="flex items-center justify-center gap-2 ">
-                <CiHeart className="w-10 h-10 text-custom-5 cursor-pointer" />
-                <p className="font-bold text-custom-5 text-2xl">
-                  {post._count.likes}
-                </p>
+                <motion.div transition={{ duration: 0.3 }}>
+                  {isLiked ? (
+                    <FaHeart
+                      onClick={() => submitLike(post.id)}
+                      className="w-9 h-9 
+                        text-red-500
+                       cursor-pointer"
+                    />
+                  ) : (
+                    <CiHeart
+                      onClick={() => submitLike(post.id)}
+                      className="w-9 h-9 
+                  text-custom-5
+                      cursor-pointer"
+                    />
+                  )}
+                </motion.div>
+                <p className="font-bold text-custom-5 text-2xl">{likeCount}</p>
               </div>
             </div>
             {Number(userId) === Number(post.User.id) && (

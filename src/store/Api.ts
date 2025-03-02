@@ -13,7 +13,14 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Followers", "Following", "Profile", "Posts", "Post"],
+  tagTypes: [
+    "Followers",
+    "Following",
+    "Profile",
+    "Posts",
+    "Post",
+    "LikedPosts",
+  ],
   endpoints: (builder) => ({
     signUp: builder.mutation({
       query: (credentials) => ({
@@ -112,6 +119,13 @@ export const api = createApi({
       }),
       providesTags: (result, error, postId) => [{ type: "Post", id: postId }],
     }),
+    getLikedPosts: builder.query({
+      query: (userId) => ({
+        url: `/posts/liked/${userId}`,
+        method: "GET",
+      }),
+      providesTags: [{ type: "LikedPosts", id: "LIST" }],
+    }),
     updatePost: builder.mutation({
       query: (data) => ({
         url: `/posts/${data.id}`,
@@ -122,6 +136,7 @@ export const api = createApi({
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
+        { type: "LikedPosts", id: "LIST" },
       ],
     }),
     deletePost: builder.mutation({
@@ -133,6 +148,7 @@ export const api = createApi({
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
+        { type: "LikedPosts", id: "LIST" },
       ],
     }),
     likePost: builder.mutation({
@@ -143,6 +159,8 @@ export const api = createApi({
       invalidatesTags: (result, error, postId) => [
         { type: "Post", id: postId },
         { type: "Posts", id: "LIST" },
+        { type: "Posts", id: result?.userId },
+        { type: "LikedPosts" },
       ],
     }),
     getRecentPosts: builder.query({
@@ -187,4 +205,5 @@ export const {
   useGetFollowingPostsQuery,
   useLazyGetByUsernameQuery,
   useLikePostMutation,
+  useGetLikedPostsQuery,
 } = api;

@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { ProfileContentProps } from "@/types/types";
-import { useGetPostsByUserIdQuery } from "@/store/Api";
+import { useGetPostsByUserIdQuery, useGetLikedPostsQuery } from "@/store/Api";
 import { useParams } from "react-router-dom";
 import { PostCard } from "../post/PostCard";
 import { Post } from "@/types/types";
@@ -16,8 +16,14 @@ export function ProfileContent({
     data: posts,
     isLoading: postsLoading,
     error: postsError,
-    isFetching,
+    isFetching: isPostsFetching,
   } = useGetPostsByUserIdQuery(id);
+  const {
+    data: likedPosts,
+    isLoading: likedPostsLoading,
+    error: likedPostsError,
+    isFetching: isLikedPostsFetching,
+  } = useGetLikedPostsQuery(id);
 
   return (
     <>
@@ -62,16 +68,44 @@ export function ProfileContent({
 
       {activePostCategory === PostCategories.POSTS && (
         <div className="mt-4">
-          {postsLoading || isFetching ? (
+          {postsLoading || isPostsFetching ? (
+            <div className="animate-pulse space-y-4">
+              {[...Array(5)].map((_, index) => (
+                <SkeletonPostCard key={index} />
+              ))}
+            </div>
+          ) : likedPostsError ? (
+            <div>Error loading posts.</div>
+          ) : posts && posts.length > 0 ? (
+            posts.map((post: Post) => (
+              <PostCard
+                key={post.id}
+                post={post}
+                user={{
+                  id: post.User.id,
+                  username: post.User.username,
+                  avatarUrl: post.User.avatarUrl,
+                }}
+              />
+            ))
+          ) : (
+            <div></div>
+          )}
+        </div>
+      )}
+
+      {activePostCategory === PostCategories.LIKED_POSTS && (
+        <div className="mt-4">
+          {likedPostsLoading || isLikedPostsFetching ? (
             <div className="animate-pulse space-y-4">
               {[...Array(5)].map((_, index) => (
                 <SkeletonPostCard key={index} />
               ))}
             </div>
           ) : postsError ? (
-            <div>Error loading posts.</div>
-          ) : posts && posts.length > 0 ? (
-            posts.map((post: Post) => (
+            <div>Error loading liked posts.</div>
+          ) : likedPosts && likedPosts.length > 0 ? (
+            likedPosts.map((post: Post) => (
               <PostCard
                 key={post.id}
                 post={post}

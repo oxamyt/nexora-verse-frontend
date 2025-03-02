@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { SkeletonPostCard } from "@/features/skeletonCards/SkeletonPost";
 import { Post } from "@/types/types";
 import { PostCard } from "@/components/post/PostCard";
+import { PostForm } from "@/components/post/PostForm";
 
 export function Feed() {
   const {
@@ -163,6 +164,8 @@ export function Feed() {
           </>
         )}
       </div>
+
+      <PostForm />
     </>
   );
 }

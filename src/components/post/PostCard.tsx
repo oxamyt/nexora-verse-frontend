@@ -1,6 +1,7 @@
 import { PostCardProps } from "@/types/types";
 import { motion } from "motion/react";
 import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { EditPostForm } from "@/components/post/EditPostForm";
 import { useSelector } from "react-redux";
@@ -92,12 +93,21 @@ export function PostCard({ post, user }: PostCardProps) {
               </Link>
               <div className="flex items-center justify-center gap-2">
                 <motion.div transition={{ duration: 0.3 }}>
-                  <CiHeart
-                    onClick={() => submitLike(post.id)}
-                    className={`w-9 h-9 ${
-                      isLiked ? "text-red-500" : "text-custom-5"
-                    } cursor-pointer`}
-                  />
+                  {isLiked ? (
+                    <FaHeart
+                      onClick={() => submitLike(post.id)}
+                      className="w-9 h-9 
+                        text-red-500
+                       cursor-pointer"
+                    />
+                  ) : (
+                    <CiHeart
+                      onClick={() => submitLike(post.id)}
+                      className="w-9 h-9 
+                  text-custom-5
+                      cursor-pointer"
+                    />
+                  )}
                 </motion.div>
 
                 <p className="font-bold text-custom-5 text-2xl">{likeCount}</p>
