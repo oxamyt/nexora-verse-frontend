@@ -189,6 +189,12 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: (result, error, data) => [
+        { type: "Post", id: data.postId },
+        { type: "Posts", id: "LIST" },
+        { type: "Posts", id: result?.userId },
+        { type: "LikedPosts" },
+      ],
     }),
   }),
 });

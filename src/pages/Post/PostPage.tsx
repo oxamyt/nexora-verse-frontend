@@ -12,11 +12,13 @@ import { DeletePostButton } from "@/components/post/DeletePostButton";
 import { FaHeart } from "react-icons/fa";
 import { Like } from "@/types/types";
 import { CommentsForm } from "@/components/comment/CommentsForm";
+import { Comment } from "@/components/comment/Comment";
+import { CommentType } from "@/types/types";
 
 export function PostPage() {
   const { postId } = useParams();
   const { data: post, isLoading, isFetching } = useGetPostByIdQuery(postId!);
-
+  console.log(post);
   const userId = useSelector((state: RootState) => state.auth.userId);
   const [likePost] = useLikePostMutation();
   const [isLiked, setIsLiked] = useState(false);
@@ -30,8 +32,6 @@ export function PostPage() {
       setLikeCount(post._count.likes);
     }
   }, [post, userId]);
-
-  console.log(post);
 
   async function submitLike(postId: number) {
     const previousIsLiked = isLiked;
@@ -135,7 +135,11 @@ export function PostPage() {
               </div>
             )}
           </div>
+
           <CommentsForm postId={post.id} />
+          {post.comments.map((comment: CommentType) => (
+            <Comment key={comment.id} comment={comment} />
+          ))}
         </div>
       </div>
     </motion.div>

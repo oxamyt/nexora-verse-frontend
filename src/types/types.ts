@@ -91,6 +91,21 @@ export interface PostCardProps {
   user: User;
 }
 
+export interface CommentType {
+  id: number;
+  content: string;
+  likes: Like[];
+  User: User;
+  createdAt: Date;
+  updatedAt: Date;
+  _count: CommentCOunts;
+}
+
+interface CommentCOunts {
+  likes: number;
+  comments: number;
+}
+
 export enum PostCategories {
   POSTS,
   LIKED_POSTS,
