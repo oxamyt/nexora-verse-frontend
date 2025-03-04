@@ -156,13 +156,14 @@ export const api = createApi({
         url: `/likes/post/${postId}`,
         method: "PATCH",
       }),
-      invalidatesTags: (result, error, postId) => [
-        { type: "Post", id: postId },
-        { type: "Posts", id: "LIST" },
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Post", id },
         { type: "Posts", id: result?.userId },
-        { type: "LikedPosts" },
+        { type: "Posts", id: "LIST" },
+        { type: "LikedPosts", id: "LIST" },
       ],
     }),
+
     getRecentPosts: builder.query({
       query: () => ({
         url: "/posts/",
@@ -189,12 +190,15 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, data) => [
-        { type: "Post", id: data.postId },
-        { type: "Posts", id: "LIST" },
-        { type: "Posts", id: result?.userId },
-        { type: "LikedPosts" },
-      ],
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+    }),
+    updateComment: builder.mutation({
+      query: (data) => ({
+        url: `/comments/${data.commentId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
   }),
 });
@@ -220,4 +224,5 @@ export const {
   useLikePostMutation,
   useGetLikedPostsQuery,
   useCreateCommentMutation,
+  useUpdateCommentMutation,
 } = api;

@@ -1,10 +1,6 @@
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import {
   Dialog,
   DialogContent,
@@ -12,37 +8,43 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { motion } from "motion/react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { isErrorData } from "@/types/ErrorDataTypes";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { CommentSchema } from "@/utils/validation/schemas";
-import { useCreateCommentMutation } from "@/store/Api";
+import { motion } from "motion/react";
+import { useUpdateCommentMutation } from "@/store/Api";
 import { useState } from "react";
-import { CommentTrigger } from "./CommentTrigger";
-import { isErrorData } from "@/types/ErrorDataTypes";
+import { CommentType } from "@/types/types";
+import { MdOutlineEdit } from "react-icons/md";
 
-export function CommentsForm({ postId }: { postId: number }) {
+export function UpdateCommentForm({ comment }: { comment: CommentType }) {
+  const [updateComment, { isLoading, error }] = useUpdateCommentMutation();
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof CommentSchema>>({
     resolver: zodResolver(CommentSchema),
     defaultValues: {
-      content: "",
+      content: comment.content,
     },
   });
 
-  const [createComment, { isLoading, error }] = useCreateCommentMutation();
-
   async function onSubmit(values: z.infer<typeof CommentSchema>) {
     try {
-      const data = { postId, content: values.content };
-      await createComment(data).unwrap();
+      await updateComment({
+        commentId: comment.id,
+        content: values.content,
+      }).unwrap();
       setOpen(false);
       form.reset();
     } catch (error) {
-      console.error("Error creating comment:", error);
+      console.error("Failed to update comment:", error);
     }
   }
 
@@ -55,12 +57,12 @@ export function CommentsForm({ postId }: { postId: number }) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <CommentTrigger />
+            <MdOutlineEdit className="w-6 h-6 mb-2 text-custom-5 cursor-pointer" />
           </motion.button>
         </DialogTrigger>
         <DialogContent className="bg-custom-1 border-none">
           <DialogHeader>
-            <DialogTitle className="text-custom-9">Create Comment</DialogTitle>
+            <DialogTitle className="text-custom-9">Update Comment</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <motion.form
@@ -99,7 +101,7 @@ export function CommentsForm({ postId }: { postId: number }) {
                   className="bg-custom-2 text-xl font-bold p-8 w-full"
                   type="submit"
                 >
-                  {isLoading ? "Creating Comment..." : "Create Comment ♥‿♥"}
+                  {isLoading ? "Updating Comment..." : "Update Comment ♥‿♥"}
                 </Button>
               </motion.div>
             </motion.form>

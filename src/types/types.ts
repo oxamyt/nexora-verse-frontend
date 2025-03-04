@@ -98,12 +98,12 @@ export interface CommentType {
   User: User;
   createdAt: Date;
   updatedAt: Date;
-  _count: CommentCOunts;
+  _count: CommentCounts;
 }
 
-interface CommentCOunts {
+interface CommentCounts {
   likes: number;
-  comments: number;
+  comments?: number;
 }
 
 export enum PostCategories {

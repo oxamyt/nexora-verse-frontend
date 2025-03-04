@@ -9,21 +9,21 @@ import { RootState } from "@/store/store";
 import { Link } from "react-router-dom";
 import { DeletePostButton } from "./DeletePostButton";
 import { useLikePostMutation } from "@/store/Api";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export function PostCard({ post, user }: PostCardProps) {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const [likePost] = useLikePostMutation();
-  const [isLiked, setIsLiked] = useState(
+  const isLikedRef = useRef(
     post.likes.some((like) => like.userId === Number(userId))
   );
   const [likeCount, setLikeCount] = useState(post._count.likes);
 
   async function submitLike(postId: number) {
-    const previousIsLiked = isLiked;
+    const previousIsLiked = isLikedRef.current;
     const previousLikeCount = likeCount;
 
-    setIsLiked(!previousIsLiked);
+    isLikedRef.current = !previousIsLiked;
     setLikeCount(
       previousIsLiked ? previousLikeCount - 1 : previousLikeCount + 1
     );
@@ -31,7 +31,7 @@ export function PostCard({ post, user }: PostCardProps) {
     try {
       await likePost(postId).unwrap();
     } catch (error) {
-      setIsLiked(previousIsLiked);
+      isLikedRef.current = previousIsLiked;
       setLikeCount(previousLikeCount);
       console.error("Error during liking post:", error);
     }
@@ -93,7 +93,7 @@ export function PostCard({ post, user }: PostCardProps) {
               </Link>
               <div className="flex items-center justify-center gap-2">
                 <motion.div transition={{ duration: 0.3 }}>
-                  {isLiked ? (
+                  {isLikedRef.current ? (
                     <FaHeart
                       onClick={() => submitLike(post.id)}
                       className="w-9 h-9 
