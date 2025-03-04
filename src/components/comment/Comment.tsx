@@ -1,13 +1,25 @@
 import { CommentType } from "@/types/types";
 import { motion } from "motion/react";
 import { CiHeart } from "react-icons/ci";
+import { FaHeart } from "react-icons/fa";
 import { UpdateCommentForm } from "./UpdateCommentForm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { DeleteCommentButton } from "./DeleteCommentButton";
+import { useLikeCommentMutation } from "@/store/Api";
 
 export function Comment({ comment }: { comment: CommentType }) {
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const [likeComment] = useLikeCommentMutation();
+  const isLiked = comment.likes.some((like) => like.userId === Number(userId));
+
+  async function submitLike({ commentId }: { commentId: number }) {
+    try {
+      await likeComment(commentId).unwrap();
+    } catch (error) {
+      console.error("Error during liking comment:", error);
+    }
+  }
 
   return (
     <div className="mt-3 space-y-4">
@@ -47,9 +59,19 @@ export function Comment({ comment }: { comment: CommentType }) {
 
             <div className="flex items-center gap-4 mt-2">
               <div className="flex items-center  gap-1">
-                <CiHeart className="w-5 h-5 text-custom-5 cursor-pointer" />
+                {isLiked ? (
+                  <FaHeart
+                    onClick={() => submitLike({ commentId: comment.id })}
+                    className="w-7 h-7 text-red-500 cursor-pointer"
+                  />
+                ) : (
+                  <CiHeart
+                    onClick={() => submitLike({ commentId: comment.id })}
+                    className="w-7 h-7 text-custom-5 cursor-pointer"
+                  />
+                )}
                 <span className="text-custom-5 text-sm">
-                  {comment._count?.likes || 0}
+                  {comment._count.likes}
                 </span>
               </div>
             </div>

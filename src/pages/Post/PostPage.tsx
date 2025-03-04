@@ -33,29 +33,7 @@ export function PostPage() {
 
   async function submitLike(postId: number) {
     try {
-      likePost(postId);
-
-      if (isLiked) {
-        setPost((prevPost: any) => ({
-          ...prevPost,
-          _count: {
-            ...prevPost._count,
-            likes: prevPost._count.likes - 1,
-          },
-          likes: prevPost.likes.filter(
-            (like: { userId: number }) => like.userId !== Number(userId)
-          ),
-        }));
-      } else {
-        setPost((prevPost: any) => ({
-          ...prevPost,
-          _count: {
-            ...prevPost._count,
-            likes: prevPost._count.likes + 1,
-          },
-          likes: [...prevPost.likes, { userId: Number(userId) }],
-        }));
-      }
+      await likePost(postId);
     } catch (error) {
       console.error("Error during liking post:", error);
     }
