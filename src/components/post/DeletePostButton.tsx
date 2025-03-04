@@ -3,6 +3,7 @@ import { useDeletePostMutation } from "@/store/Api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+
 export function DeletePostButton({ postId }: { postId: number }) {
   const userId = useSelector((state: RootState) => state.auth.userId);
   const [deletePost] = useDeletePostMutation();

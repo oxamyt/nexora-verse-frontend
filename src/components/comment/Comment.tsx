@@ -4,6 +4,7 @@ import { CiHeart } from "react-icons/ci";
 import { UpdateCommentForm } from "./UpdateCommentForm";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { DeleteCommentButton } from "./DeleteCommentButton";
 
 export function Comment({ comment }: { comment: CommentType }) {
   const userId = useSelector((state: RootState) => state.auth.userId);
@@ -32,7 +33,10 @@ export function Comment({ comment }: { comment: CommentType }) {
                   · {new Date(comment.createdAt).toLocaleDateString()}
                 </span>
                 {Number(userId) === Number(comment.User.id) && (
-                  <UpdateCommentForm comment={comment} />
+                  <span className="flex justify-center items-center gap-2">
+                    <UpdateCommentForm comment={comment} />
+                    <DeleteCommentButton commentId={comment.id} />
+                  </span>
                 )}
               </div>
             </div>

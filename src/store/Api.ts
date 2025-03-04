@@ -200,6 +200,13 @@ export const api = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
+    deleteComment: builder.mutation({
+      query: (commentId) => ({
+        url: `/comments/${commentId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+    }),
   }),
 });
 
@@ -225,4 +232,5 @@ export const {
   useGetLikedPostsQuery,
   useCreateCommentMutation,
   useUpdateCommentMutation,
+  useDeleteCommentMutation,
 } = api;
