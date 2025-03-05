@@ -59,7 +59,7 @@ export interface BannerAvatarFormProps {
   setAvatarFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
-interface User {
+export interface User {
   id: number;
   username: string;
   avatarUrl: string;

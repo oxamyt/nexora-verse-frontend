@@ -12,6 +12,9 @@ import { FeedLayout } from "@/pages/Feed/FeedLayout";
 import { Feed } from "@/pages/Feed/Feed";
 import { SearchLayout } from "@/pages/Search/SearchLayout";
 import { Search } from "@/pages/Search/Search";
+import { MessagesLayout } from "@/pages/Messages/MessagesLayout";
+import { UsersList } from "@/pages/Messages/UsersList";
+import { ChatPage } from "@/pages/Messages/ChatPage";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +65,18 @@ const router = createBrowserRouter([
         <Search />
       </SearchLayout>
     ),
+  },
+  {
+    path: "/messages",
+    element: (
+      <MessagesLayout>
+        <Outlet />
+      </MessagesLayout>
+    ),
+    children: [
+      { path: "", element: <UsersList /> },
+      { path: ":userId", element: <ChatPage /> },
+    ],
   },
 ]);
 

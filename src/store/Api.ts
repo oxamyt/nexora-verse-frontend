@@ -218,6 +218,12 @@ export const api = createApi({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
     }),
+    getUsers: builder.query({
+      query: () => ({
+        url: "/users",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -245,4 +251,5 @@ export const {
   useUpdateCommentMutation,
   useDeleteCommentMutation,
   useLikeCommentMutation,
+  useGetUsersQuery,
 } = api;
