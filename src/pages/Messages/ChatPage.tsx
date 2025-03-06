@@ -3,29 +3,15 @@ import { useEffect, useState } from "react";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { useGetMessagesQuery, useCreateMessageMutation } from "@/store/Api";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { messageSchema } from "@/utils/validation/schemas";
-import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
+import { useGetMessagesQuery } from "@/store/Api";
 import { motion } from "motion/react";
-import { IoSendSharp } from "react-icons/io5";
 import { Message } from "@/types/types";
+import { ChatForm } from "@/components/messages/ChatForm";
 
 export function ChatPage() {
   const { userId: receiverId } = useParams();
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const [createMessage, { isLoading: isLoadingMessage }] =
-    useCreateMessageMutation();
+
   const {
     data: existingMessages,
     isLoading,
@@ -38,10 +24,6 @@ export function ChatPage() {
     }
   );
   const [messages, setMessages] = useState<Message[]>([]);
-
-  const form = useForm<z.infer<typeof messageSchema>>({
-    resolver: zodResolver(messageSchema),
-  });
 
   useEffect(() => {
     const handleReceiveMessage = (newMessage: Message) => {
@@ -70,16 +52,6 @@ export function ChatPage() {
       setMessages(existingMessages);
     }
   }, [existingMessages]);
-
-  async function onSubmit(values: z.infer<typeof messageSchema>) {
-    try {
-      const messagePayload = { ...values, receiverId };
-      await createMessage(messagePayload).unwrap();
-      form.reset();
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    }
-  }
 
   if (isLoading) return <div>Loading messages...</div>;
   if (isError) return <div>Error loading messages</div>;
@@ -130,40 +102,7 @@ export function ChatPage() {
         })}
       </div>
 
-      <div className="sticky bottom-0 bg-custom-8 p-4 border-t border-custom-11">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex gap-2 items-end"
-          >
-            <FormField
-              control={form.control}
-              name="body"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <Textarea
-                      className="resize-none bg-custom-3 border-none text-custom-9 placeholder:text-custom-5 pr-12 rounded-2xl"
-                      placeholder="Message..."
-                      rows={1}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-500 text-xs mt-1" />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              className="bg-custom-6 hover:bg-custom-7 h-10 w-10 rounded-full shrink-0"
-              disabled={isLoadingMessage}
-            >
-              <IoSendSharp className="text-lg text-custom-9" />
-            </Button>
-          </form>
-        </Form>
-      </div>
+      <ChatForm receiverId={Number(receiverId)} />
     </div>
   );
 }
