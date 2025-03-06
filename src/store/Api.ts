@@ -224,6 +224,19 @@ export const api = createApi({
         method: "GET",
       }),
     }),
+    getMessages: builder.query({
+      query: (data) => ({
+        url: `/messages/${data.receiverId}`,
+        method: "GET",
+      }),
+    }),
+    createMessage: builder.mutation({
+      query: (data) => ({
+        url: `/messages/${data.receiverId}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -252,4 +265,6 @@ export const {
   useDeleteCommentMutation,
   useLikeCommentMutation,
   useGetUsersQuery,
+  useGetMessagesQuery,
+  useCreateMessageMutation,
 } = api;

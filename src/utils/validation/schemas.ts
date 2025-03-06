@@ -92,6 +92,13 @@ const CommentSchema = z.object({
     .max(200, { message: "Body must not exceed 200 characters." }),
 });
 
+const messageSchema = z.object({
+  body: z
+    .string()
+    .min(1, "Message body is required")
+    .max(500, "Message body must not exceed 500 characters."),
+});
+
 export {
   signUpSchema,
   loginSchema,
@@ -99,4 +106,5 @@ export {
   postSchema,
   searchUsernameSchema,
   CommentSchema,
+  messageSchema,
 };

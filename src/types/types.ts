@@ -106,6 +106,25 @@ interface CommentCounts {
   comments?: number;
 }
 
+export interface Message {
+  id: number;
+  senderId: number;
+  receiverId: number;
+  body: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sender: {
+    id: number;
+    username: string;
+    avatarUrl: string;
+  };
+  receiver: {
+    id: number;
+    username: string;
+    avatarUrl: string;
+  };
+}
+
 export enum PostCategories {
   POSTS,
   LIKED_POSTS,
