@@ -237,6 +237,13 @@ export const api = createApi({
         body: data,
       }),
     }),
+    updateMessage: builder.mutation({
+      query: (data) => ({
+        url: `/messages/${data.messageId}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -267,4 +274,6 @@ export const {
   useGetUsersQuery,
   useGetMessagesQuery,
   useCreateMessageMutation,
+  useLazyGetMessagesQuery,
+  useUpdateMessageMutation,
 } = api;
