@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { FollowList } from "./FollowList";
 import { useGetFollowedQuery, useGetFollowersQuery } from "@/store/Api";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 export function ProfileDetails({
   profile,
@@ -50,9 +52,17 @@ export function ProfileDetails({
         transition={{ duration: 0.4 }}
       >
         <div>
-          <h1 className="text-2xl text-custom-9 font-bold">
-            {profile.username}
-          </h1>
+          <div className="flex justify-center items-center gap-5">
+            <h1 className="text-2xl text-custom-9 font-bold">
+              {profile.username}
+            </h1>
+            {!isProfileOwner && (
+              <Link to={`/messages/${profile.id}`}>
+                {" "}
+                <IoChatbubbleEllipsesOutline className="bg-custom-2 p-1 rounded-full cursor-pointer w-10 h-10 text-white" />
+              </Link>
+            )}
+          </div>
         </div>
         {isProfileOwner ? (
           <ProfileForm profile={profile} setProfile={setProfile} />

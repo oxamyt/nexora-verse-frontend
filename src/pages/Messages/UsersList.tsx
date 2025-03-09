@@ -6,14 +6,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { User } from "@/types/types";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 export function UsersList() {
   const { data: users, isFetching, error } = useGetUsersQuery("");
   const [usernameValue, setUsernameValue] = useState("");
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
-  const filteredUsers = users?.filter((user: User) =>
-    user.username.toLowerCase().includes(usernameValue.toLowerCase())
-  );
+  const filteredUsers = users
+    ?.filter((user: User) =>
+      user.username.toLowerCase().includes(usernameValue.toLowerCase())
+    )
+    .filter((user: User) => user.id !== Number(userId));
 
   return (
     <div className="max-w-md mx-auto p-4 space-y-6">
