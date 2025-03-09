@@ -15,12 +15,10 @@ import { Search } from "@/pages/Search/Search";
 import { MessagesLayout } from "@/pages/Messages/MessagesLayout";
 import { UsersList } from "@/pages/Messages/UsersList";
 import { ChatPage } from "@/pages/Messages/ChatPage";
+import ProtectedRoute from "@/components/protectedRoute/ProtectedRoute";
+import { ErrorPage } from "@/pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
   {
     path: "/auth",
     element: (
@@ -28,54 +26,66 @@ const router = createBrowserRouter([
         <Outlet />
       </AuthLayout>
     ),
+    errorElement: <ErrorPage />,
     children: [
       { path: "signup", element: <SignUp /> },
       { path: "login", element: <Login /> },
     ],
   },
   {
-    path: "/profile/:id",
-    element: (
-      <ProfileLayout>
-        <Profile />
-      </ProfileLayout>
-    ),
+    path: "/",
+    element: <Home />,
+    errorElement: <ErrorPage />,
   },
   {
-    path: "/posts",
-    element: (
-      <PostLayout>
-        <Outlet />
-      </PostLayout>
-    ),
-    children: [{ path: ":postId", element: <PostPage /> }],
-  },
-  {
-    path: "/live",
-    element: (
-      <FeedLayout>
-        <Feed />
-      </FeedLayout>
-    ),
-  },
-  {
-    path: "/search",
-    element: (
-      <SearchLayout>
-        <Search />
-      </SearchLayout>
-    ),
-  },
-  {
-    path: "/messages",
-    element: (
-      <MessagesLayout>
-        <Outlet />
-      </MessagesLayout>
-    ),
+    element: <ProtectedRoute />,
+    errorElement: <ErrorPage />,
     children: [
-      { path: "", element: <UsersList /> },
-      { path: ":userId", element: <ChatPage /> },
+      {
+        path: "/profile/:id",
+        element: (
+          <ProfileLayout>
+            <Profile />
+          </ProfileLayout>
+        ),
+      },
+      {
+        path: "/posts",
+        element: (
+          <PostLayout>
+            <Outlet />
+          </PostLayout>
+        ),
+        children: [{ path: ":postId", element: <PostPage /> }],
+      },
+      {
+        path: "/live",
+        element: (
+          <FeedLayout>
+            <Feed />
+          </FeedLayout>
+        ),
+      },
+      {
+        path: "/search",
+        element: (
+          <SearchLayout>
+            <Search />
+          </SearchLayout>
+        ),
+      },
+      {
+        path: "/messages",
+        element: (
+          <MessagesLayout>
+            <Outlet />
+          </MessagesLayout>
+        ),
+        children: [
+          { path: "", element: <UsersList /> },
+          { path: ":userId", element: <ChatPage /> },
+        ],
+      },
     ],
   },
 ]);
