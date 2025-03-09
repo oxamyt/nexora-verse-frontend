@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 import { useGetMessagesQuery } from "@/store/Api";
 import { Message } from "@/types/types";
 import { ChatForm } from "@/components/messages/ChatForm";
-import { ChatMessage } from "@/components/messages/ChatMessages";
+import { ChatMessage } from "@/components/messages/ChatMessage";
 
 export function ChatPage() {
   const { userId: receiverId } = useParams();
@@ -45,6 +45,10 @@ export function ChatPage() {
       );
     };
 
+    const handleDeleteMessage = (deletedMessage: Message) => {
+      setMessages((prev) => prev.filter((msg) => msg.id !== deletedMessage.id));
+    };
+
     if (userId && receiverId) {
       socket.emit("joinChat", {
         userId: Number(userId),
@@ -53,11 +57,13 @@ export function ChatPage() {
 
       socket.on("receiveMessage", handleReceiveMessage);
       socket.on("updateMessage", handleUpdateMessage);
+      socket.on("deleteMessage", handleDeleteMessage);
     }
 
     return () => {
       socket.off("receiveMessage", handleReceiveMessage);
       socket.off("updateMessage", handleUpdateMessage);
+      socket.on("deleteMessage", handleDeleteMessage);
       socket.emit("leaveChat", {
         userId: Number(userId),
         chatPartnerId: Number(receiverId),
@@ -76,7 +82,7 @@ export function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen bg-custom-1">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6">
         {messages.map((msg) => {
           return (
             <ChatMessage

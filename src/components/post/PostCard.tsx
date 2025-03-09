@@ -62,7 +62,13 @@ export function PostCard({ post, user }: PostCardProps) {
             <span className="text-custom-5 text-sm">·</span>
             {post.createdAt && (
               <span className="text-custom-5 text-sm">
-                {new Date(post.createdAt).toLocaleDateString()}
+                {new Date(post.createdAt).toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </span>
             )}
           </div>
@@ -76,7 +82,14 @@ export function PostCard({ post, user }: PostCardProps) {
 
           {post.updatedAt !== post.createdAt && (
             <div className="mt-3 text-xs text-custom-5">
-              Updated: {new Date(post.updatedAt).toLocaleDateString()}
+              Updated:{" "}
+              {new Date(post.updatedAt).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </div>
           )}
 

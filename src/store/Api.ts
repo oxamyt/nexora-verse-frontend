@@ -244,6 +244,13 @@ export const api = createApi({
         body: data,
       }),
     }),
+    deleteMessage: builder.mutation({
+      query: (data) => ({
+        url: `/messages/${data.id}`,
+        method: "DELETE",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -276,4 +283,5 @@ export const {
   useCreateMessageMutation,
   useLazyGetMessagesQuery,
   useUpdateMessageMutation,
+  useDeleteMessageMutation,
 } = api;

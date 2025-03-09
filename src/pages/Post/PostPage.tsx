@@ -65,7 +65,14 @@ export function PostPage() {
 
             {post.createdAt && (
               <span className="text-custom-5 text-sm ml-2">
-                · {new Date(post.createdAt).toLocaleDateString()}
+                ·{" "}
+                {new Date(post.createdAt).toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </span>
             )}
           </div>
@@ -81,7 +88,14 @@ export function PostPage() {
 
           {post.updatedAt !== post.createdAt && (
             <div className="mt-3 text-xs text-custom-5">
-              Updated: {new Date(post.updatedAt).toLocaleDateString()}
+              Updated:{" "}
+              {new Date(post.updatedAt).toLocaleString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </div>
           )}
 

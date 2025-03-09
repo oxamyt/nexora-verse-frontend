@@ -3,6 +3,8 @@ import { motion } from "motion/react";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { MdEdit } from "react-icons/md";
+import { RiDeleteBin6Fill } from "react-icons/ri";
+import { useDeleteMessageMutation } from "@/store/Api";
 
 export function ChatMessage({
   msg,
@@ -11,8 +13,22 @@ export function ChatMessage({
   msg: Message;
   handleEditMessage: (message: Message) => void;
 }) {
+  const [deleteMessage, { isLoading: isLoadingDelete }] =
+    useDeleteMessageMutation();
   const userId = useSelector((state: RootState) => state.auth.userId);
   const isCurrentUser = Number(msg.sender.id) === Number(userId);
+
+  async function onDelete() {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this message?"
+    );
+    if (!confirmed) return;
+    try {
+      await deleteMessage({ id: msg.id, receiverId: msg.receiver.id });
+    } catch (error) {
+      console.error("Failed to delete message:", error);
+    }
+  }
 
   return (
     <motion.div
@@ -47,14 +63,26 @@ export function ChatMessage({
             minute: "2-digit",
           })}
         </span>
+        {isCurrentUser && (
+          <div className="  flex gap-2">
+            <button className="bg-custom-11 p-1 rounded-full">
+              <MdEdit
+                className="text-white w-5 h-5"
+                onClick={() => handleEditMessage(msg)}
+              />
+            </button>
+            <button
+              disabled={isLoadingDelete}
+              className="bg-red-600 p-1 rounded-full"
+            >
+              <RiDeleteBin6Fill
+                className="text-white w-5 h-5"
+                onClick={() => onDelete()}
+              />
+            </button>
+          </div>
+        )}
       </div>
-
-      {isCurrentUser && (
-        <MdEdit
-          className="text-white w-5 h-5 absolute top-7 right-10 cursor-pointer"
-          onClick={() => handleEditMessage(msg)}
-        />
-      )}
     </motion.div>
   );
 }
