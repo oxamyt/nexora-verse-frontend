@@ -102,6 +102,7 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
+
       invalidatesTags: (result) => [{ type: "Posts", id: result?.userId }],
     }),
     getPostsByUserId: builder.query({

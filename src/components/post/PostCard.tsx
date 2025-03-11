@@ -78,6 +78,21 @@ export function PostCard({ post, user }: PostCardProps) {
               {post.title}
             </h3>
             <p className="text-base text-white break-words">{post.body}</p>
+
+            {post.imageUrl && (
+              <motion.div
+                className="mt-4 rounded-lg overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
+                  src={post.imageUrl}
+                  alt="Post content"
+                  className="w-full max-h-96 object-cover rounded-lg cursor-pointer "
+                />
+              </motion.div>
+            )}
           </div>
 
           {post.updatedAt !== post.createdAt && (

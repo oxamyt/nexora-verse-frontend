@@ -73,6 +73,7 @@ export interface Post {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  imageUrl?: string;
   _count: PostCounts;
   likes: Like[];
 }

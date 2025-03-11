@@ -18,13 +18,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { postSchema } from "@/utils/validation/schemas";
 import { IoCreateOutline } from "react-icons/io5";
 import { motion } from "motion/react";
 import { useCreatePostMutation } from "@/store/Api";
+import { FaFileImage } from "react-icons/fa";
 
 export function PostForm() {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const form = useForm({
     resolver: zodResolver(postSchema),
@@ -32,12 +36,39 @@ export function PostForm() {
   });
 
   const [createPost, { isLoading }] = useCreatePostMutation();
+
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function removeImage() {
+    setSelectedImage(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   async function onSubmit(values: { title: string; body: string }) {
     try {
-      await createPost(values).unwrap();
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("body", values.body);
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
+      await createPost(formData).unwrap();
 
       setOpen(false);
       form.reset();
+      removeImage();
     } catch (error) {
       console.error("Failed to update profile:", error);
     }
@@ -67,6 +98,41 @@ export function PostForm() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
+              <div className="space-y-4">
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                  className="hidden"
+                  id="image-upload"
+                />
+                <label
+                  htmlFor="image-upload"
+                  className="flex items-center gap-2 text-custom-5 cursor-pointer p-2 rounded-lg"
+                >
+                  <FaFileImage className="w-6 h-6" />
+                  <span>Add Image</span>
+                </label>
+
+                {previewUrl && (
+                  <div className="relative group">
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      className="rounded-lg max-h-48 object-cover w-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full text-2xl "
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <FormField
                 control={form.control}
                 name="title"
