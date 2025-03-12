@@ -23,11 +23,17 @@ import { postSchema } from "@/utils/validation/schemas";
 import { motion } from "motion/react";
 import { useUpdatePostMutation } from "@/store/Api";
 import { MdOutlineEdit } from "react-icons/md";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { FaFileImage } from "react-icons/fa";
 import { Post } from "@/types/types";
 
 export function EditPostForm({ post }: { post: Post }) {
   const [updatePost, { isLoading }] = useUpdatePostMutation();
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    post.imageUrl || null
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof postSchema>>({
     resolver: zodResolver(postSchema),
@@ -37,15 +43,38 @@ export function EditPostForm({ post }: { post: Post }) {
     },
   });
 
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  async function removeImage() {
+    setSelectedImage(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   async function onSubmit(values: z.infer<typeof postSchema>) {
     try {
-      await updatePost({
-        id: post.id,
-        title: values.title,
-        body: values.body,
-      }).unwrap();
+      const formData = new FormData();
+      formData.append("title", values.title || "");
+      formData.append("body", values.body || "");
+      if (selectedImage) {
+        formData.append("image", selectedImage);
+      }
+
+      await updatePost({ data: formData, id: post.id }).unwrap();
+
       setOpen(false);
       form.reset();
+      removeImage();
     } catch (error) {
       console.error("Failed to update post:", error);
     }
@@ -71,6 +100,41 @@ export function EditPostForm({ post }: { post: Post }) {
             transition={{ duration: 0.5 }}
             className="space-y-8 text-custom-1 max-w-full mx-auto p-8"
           >
+            <div className="space-y-4">
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                ref={fileInputRef}
+                className="hidden"
+                id="image-upload"
+              />
+              <label
+                htmlFor="image-upload"
+                className="flex items-center gap-2 text-custom-5 cursor-pointer p-2 rounded-lg"
+              >
+                <FaFileImage className="w-6 h-6" />
+                <span>Add Image</span>
+              </label>
+
+              {previewUrl && (
+                <div className="relative group">
+                  <img
+                    src={previewUrl}
+                    alt="Preview"
+                    className="rounded-lg max-h-48 object-fill w-full"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full text-2xl "
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
+            </div>
+
             <FormField
               control={form.control}
               name="title"

@@ -120,7 +120,7 @@ export function PostForm() {
                     <img
                       src={previewUrl}
                       alt="Preview"
-                      className="rounded-lg max-h-48 object-cover w-full"
+                      className="rounded-lg max-h-48 object-fill w-full"
                     />
                     <button
                       type="button"

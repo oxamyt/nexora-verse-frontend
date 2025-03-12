@@ -128,8 +128,8 @@ export const api = createApi({
       providesTags: [{ type: "LikedPosts", id: "LIST" }],
     }),
     updatePost: builder.mutation({
-      query: (data) => ({
-        url: `/posts/${data.id}`,
+      query: ({ data, id }) => ({
+        url: `/posts/${id}`,
         method: "PATCH",
         body: data,
       }),
