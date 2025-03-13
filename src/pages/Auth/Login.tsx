@@ -47,7 +47,6 @@ export function Login() {
 
       if (response.token) {
         localStorage.setItem("token", response.token);
-        console.log("setting", response.userId);
 
         dispatch(setUser(response.userId));
         navigate(`/profile/${response.userId}`);

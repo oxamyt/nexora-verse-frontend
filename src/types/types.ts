@@ -3,6 +3,7 @@ export interface AuthState {
 }
 export interface ProfileState {
   id: number;
+  isGuest: boolean;
   username: string;
   bio: string;
   avatarUrl: string;

@@ -252,6 +252,12 @@ export const api = createApi({
         body: data,
       }),
     }),
+    guestLogin: builder.mutation({
+      query: () => ({
+        url: "/auth/guest",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -285,4 +291,5 @@ export const {
   useLazyGetMessagesQuery,
   useUpdateMessageMutation,
   useDeleteMessageMutation,
+  useGuestLoginMutation,
 } = api;

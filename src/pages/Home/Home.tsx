@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store/hooks";
 import { setUser } from "@/store/authSlice";
+import { GuestLoginButton } from "@/components/Home/GuestLoginButton";
 const API = import.meta.env.VITE_API_URL;
 
 export default function Home() {
@@ -72,6 +73,9 @@ export default function Home() {
           <FaGithub className="w-8 h-8" />
           Sign up with Github
         </a>
+      </motion.div>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+        <GuestLoginButton />
       </motion.div>
     </div>
   );

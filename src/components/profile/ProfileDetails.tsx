@@ -17,6 +17,8 @@ export function ProfileDetails({
   const [follow, { isLoading }] = useFollowMutation();
   const [isFollowing, setIsFollowing] = useState(profile.isFollowedByRequester);
 
+  console.log(profile);
+
   useEffect(() => {
     setIsFollowing(profile.isFollowedByRequester);
   }, [profile.isFollowedByRequester]);
@@ -64,6 +66,7 @@ export function ProfileDetails({
             )}
           </div>
         </div>
+
         {isProfileOwner ? (
           <ProfileForm profile={profile} setProfile={setProfile} />
         ) : (
@@ -80,7 +83,11 @@ export function ProfileDetails({
           </motion.button>
         )}
       </motion.div>
-
+      {profile.isGuest && (
+        <p className="text-lg bg-custom-2 font-bold rounded-full w-fit px-2 py-1 text-white  italic">
+          Guest User
+        </p>
+      )}
       <motion.div
         className="mt-4 flex gap-4"
         initial={{ opacity: 0 }}
