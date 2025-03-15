@@ -64,7 +64,7 @@ export function Profile() {
 
   return (
     <motion.div
-      className="max-w-full mx-auto"
+      className="w-full max-w-full mx-auto lg:max-w-4xl"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
@@ -80,7 +80,7 @@ export function Profile() {
         setProfile={setProfile}
       />
 
-      <p className="px-4 text-custom-9 space-x-4 break-words overflow-hidden">
+      <p className="p-4 text-custom-9 space-x-4 break-words overflow-hidden">
         {profile.bio}
       </p>
 

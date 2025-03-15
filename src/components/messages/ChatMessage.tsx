@@ -45,7 +45,9 @@ export function ChatMessage({
         className="w-8 h-8 mt-2 rounded-full object-cover"
       />
       <div
-        className={`max-w-40 flex flex-col ${isCurrentUser ? "items-end" : ""}`}
+        className={`max-w-40 lg:max-w-lg flex flex-col ${
+          isCurrentUser ? "items-end" : ""
+        }`}
       >
         <div
           className={`p-3 rounded-2xl  ${

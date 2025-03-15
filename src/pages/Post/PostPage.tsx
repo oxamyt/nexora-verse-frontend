@@ -45,7 +45,7 @@ export function PostPage() {
   return (
     <motion.div
       key={post.id}
-      className="bg-custom-1 border-b border-custom-11 p-4 shadow-sm"
+      className="bg-custom-1 w-full max-w-4xl mx-auto p-4 lg:mt-64 lg:p-0"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -94,7 +94,7 @@ export function PostPage() {
                 <img
                   src={post.imageUrl}
                   alt="Post content"
-                  className="w-full max-h-96 object-cover rounded-lg cursor-pointer "
+                  className="w-full max-h-96 object-contain rounded-lg cursor-pointer "
                 />
               </motion.div>
             )}

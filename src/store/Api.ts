@@ -103,7 +103,10 @@ export const api = createApi({
         body: data,
       }),
 
-      invalidatesTags: (result) => [{ type: "Posts", id: result?.userId }],
+      invalidatesTags: (result) => [
+        { type: "Posts", id: result?.userId },
+        { type: "Posts", id: "LIST" },
+      ],
     }),
     getPostsByUserId: builder.query({
       query: (userId) => ({

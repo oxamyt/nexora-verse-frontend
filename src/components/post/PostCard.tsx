@@ -89,7 +89,7 @@ export function PostCard({ post, user }: PostCardProps) {
                 <img
                   src={post.imageUrl}
                   alt="Post content"
-                  className="w-full max-h-96 object-cover rounded-lg cursor-pointer "
+                  className="w-full max-h-96 object-contain rounded-lg cursor-pointer "
                 />
               </motion.div>
             )}

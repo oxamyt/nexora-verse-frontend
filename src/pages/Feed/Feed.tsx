@@ -61,7 +61,7 @@ export function Feed() {
       : errorFollowing;
 
   return (
-    <>
+    <div className="lg:w-full">
       <div
         ref={headerRef}
         className={`sticky top-0 z-10 bg-custom-1 backdrop-blur-sm transition-transform duration-300 ${
@@ -73,7 +73,7 @@ export function Feed() {
             className={`px-4 py-4 font-bold text-lg relative ${
               activePostCategory === FeedPostCategories.RECENT_POSTS
                 ? "text-custom-9"
-                : "text-custom-5 hover:text-custom-8"
+                : "text-custom-5 hover:text-custom-2"
             }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -94,7 +94,7 @@ export function Feed() {
             className={`px-4 py-4 font-bold text-lg relative ${
               activePostCategory === FeedPostCategories.FOLLOWING_POSTS
                 ? "text-custom-9"
-                : "text-custom-5 hover:text-custom-8"
+                : "text-custom-5 hover:text-custom-2"
             }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -113,7 +113,7 @@ export function Feed() {
         </div>
       </div>
 
-      <div className="pb-4">
+      <div className="pb-4 lg:max-w-2xl lg:mx-auto lg:w-full lg:px-4">
         {isLoading ? (
           <div className="animate-pulse space-y-4">
             {[...Array(5)].map((_, index) => (
@@ -166,6 +166,6 @@ export function Feed() {
       </div>
 
       <PostForm />
-    </>
+    </div>
   );
 }

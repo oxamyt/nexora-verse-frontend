@@ -82,23 +82,23 @@ export function ChatPage() {
 
   return (
     <div className="flex flex-col h-screen bg-custom-1">
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {messages.map((msg) => {
-          return (
-            <ChatMessage
-              key={msg.id}
-              msg={msg}
-              handleEditMessage={handleEditMessage}
-            />
-          );
-        })}
+      <div className="flex-1 overflow-y-auto p-4 space-y-6 max-w-4xl mx-auto w-full lg:px-0">
+        {messages.map((msg) => (
+          <ChatMessage
+            key={msg.id}
+            msg={msg}
+            handleEditMessage={handleEditMessage}
+          />
+        ))}
       </div>
 
-      <ChatForm
-        receiverId={Number(receiverId)}
-        editingMessage={editingMessage}
-        handleCancelEdit={handleCancelEdit}
-      />
+      <div className="max-w-4xl mx-auto w-full lg:px-0">
+        <ChatForm
+          receiverId={Number(receiverId)}
+          editingMessage={editingMessage}
+          handleCancelEdit={handleCancelEdit}
+        />
+      </div>
     </div>
   );
 }
