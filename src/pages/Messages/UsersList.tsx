@@ -21,7 +21,7 @@ export function UsersList() {
     .filter((user: User) => user.id !== Number(userId));
 
   return (
-    <div className="max-w-md mx-auto p-4 space-y-6">
+    <div className="max-w-md mx-auto p-4 space-y-6 mt-10">
       <Input
         placeholder="Search username..."
         value={usernameValue}
