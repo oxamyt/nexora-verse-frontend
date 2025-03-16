@@ -1,50 +1,64 @@
-# React + TypeScript + Vite
+# Nexora Verse - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Currently, two official plugins are available:
+A modern social media platform frontend built with React, Redux, and TypeScript. Connect with friends, share posts, and interact in real-time.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Overview
 
-## Expanding the ESLint configuration
+Nexora Verse is a full-stack social media application inspired by platforms like Bluesky and X. This repository contains the frontend implementation built with modern web technologies. The backend repository can be found [here](https://github.com/oxamyt/nexora-verse-backend).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Screenshots
 
-- Configure the top-level `parserOptions` property like this:
+**Home Feed Interface**  
+![Home Feed](https://res.cloudinary.com/dehoidlo0/image/upload/v1742149302/nexora%20images/zodu8pgucvhvh4cqmiji.png)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**User Profile Page**  
+![User Profile](https://res.cloudinary.com/dehoidlo0/image/upload/v1742149301/nexora%20images/poahietxrf65nfujukko.png)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+**Live Chat Feature**  
+![Chat Interface](https://res.cloudinary.com/dehoidlo0/image/upload/v1742149301/nexora%20images/be6icix0tyqa3xgrfdtg.png)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Features
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### Core Features
+
+- **Authentication**
+
+  - GitHub OAuth login
+  - JWT authentication
+  - Guest login functionality
+  - Protected routes
+
+- **Posts**
+
+  - Create/Edit/Delete text posts
+  - Image uploads for posts (Cloudinary integration)
+  - Filter posts (All/Following)
+  - Like/Unlike posts
+  - Comments posts
+
+- **User Interactions**
+
+  - Follow/Unfollow users
+  - Direct messaging with live chat (Socket.io)
+  - User search by username
+  - Profile customization
+
+- **UI/UX**
+  - Responsive design
+  - Animated transitions (Motion library)
+  - Loading states & error handling
+  - Accessible components
+
+## Technologies Used
+
+- **Frontend Framework**: React + TypeScript
+- **State Management**: Redux Toolkit
+- **UI Library**: shadcn/ui + Radix UI Primitives
+- **Styling**: Tailwind CSS
+- **Animation**: Motion
+- **Real-Time**: Socket.IO client
+- **Form Handling**: React Hook Form + Zod validation
+- **Testing**: Vitest + React Testing Library
+- **Build Tool**: Vite
