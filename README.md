@@ -1,7 +1,5 @@
 # Nexora Verse - Frontend
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 A modern social media platform frontend built with React, Redux, and TypeScript. Connect with friends, share posts, and interact in real-time.
 
 ## Project Overview
