@@ -1,10 +1,12 @@
-# Nexora Verse - Frontend
+# Nexora Verse - Frontend 🚀
 
 A modern social media platform frontend built with React, Redux, and TypeScript. Connect with friends, share posts, and interact in real-time.
 
 ## Project Overview
 
 Nexora Verse is a full-stack social media application inspired by platforms like Bluesky and X. This repository contains the frontend implementation built with modern web technologies. The backend repository can be found [here](https://github.com/oxamyt/nexora-verse-backend).
+
+🚀 [Try it Live](https://nexora-verse.netlify.app/) 🚀
 
 ## Screenshots
 
