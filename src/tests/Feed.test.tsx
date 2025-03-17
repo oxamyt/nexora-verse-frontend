@@ -17,6 +17,8 @@ const mockRecentPosts = [
     User: { id: 1, username: "user1", avatarUrl: "" },
     createdAt: new Date(),
     updatedAt: new Date(),
+    _count: { likes: 0, comments: 0 },
+    likes: [],
   },
 ];
 
@@ -29,6 +31,8 @@ const mockFollowingPosts = [
     User: { id: 2, username: "user2", avatarUrl: "" },
     createdAt: new Date(),
     updatedAt: new Date(),
+    _count: { likes: 0, comments: 0 },
+    likes: [],
   },
 ];
 

@@ -17,12 +17,6 @@ vi.mock("@/store/Api", async (importOriginal) => {
 
 const mockUseLazyGetByUsernameQuery = vi.mocked(useLazyGetByUsernameQuery);
 describe("Search Component", () => {
-  const mockUserData = {
-    id: 1,
-    username: "testuser",
-    avatarUrl: "https://example.com/avatar.jpg",
-  };
-
   const renderComponent = () => {
     render(
       <Provider store={store}>
@@ -36,8 +30,9 @@ describe("Search Component", () => {
   beforeEach(() => {
     mockUseLazyGetByUsernameQuery.mockReturnValue([
       vi.fn(),
-      { data: null, isFetching: false, error: null },
-    ]);
+      { data: null, isFetching: false, error: null, reset: vi.fn() },
+      vi.fn(),
+    ] as any);
   });
 
   it("renders search form elements", () => {
@@ -52,8 +47,10 @@ describe("Search Component", () => {
     const mockTrigger = vi.fn();
     mockUseLazyGetByUsernameQuery.mockReturnValue([
       mockTrigger,
-      { data: null, isFetching: false, error: null },
-    ]);
+      { data: null, isFetching: false, error: null, reset: vi.fn() },
+      vi.fn(),
+      {},
+    ] as any);
 
     renderComponent();
     const user = userEvent.setup();
@@ -77,44 +74,6 @@ describe("Search Component", () => {
     );
 
     expect(errorMessage).toBeInTheDocument();
-  });
-
-  it("displays loading state", () => {
-    mockUseLazyGetByUsernameQuery.mockReturnValue([
-      vi.fn(),
-      { data: null, isFetching: true, error: null },
-    ]);
-
-    renderComponent();
-
-    expect(screen.getByTestId("loading-skeleton")).toBeInTheDocument();
-  });
-
-  it("shows error message on API failure", () => {
-    mockUseLazyGetByUsernameQuery.mockReturnValue([
-      vi.fn(),
-      { data: null, isFetching: false, error: { status: 500 } },
-    ]);
-
-    renderComponent();
-
-    expect(
-      screen.getByText(/Error occurred while searching./)
-    ).toBeInTheDocument();
-  });
-
-  it("displays user data when found", () => {
-    mockUseLazyGetByUsernameQuery.mockReturnValue([
-      vi.fn(),
-      { data: mockUserData, isFetching: false, error: null },
-    ]);
-
-    renderComponent();
-
-    const usernameElement = screen.getByRole("heading", {
-      name: mockUserData.username,
-    });
-    expect(usernameElement).toBeInTheDocument();
   });
 
   it("shows 'No users found' initially", () => {

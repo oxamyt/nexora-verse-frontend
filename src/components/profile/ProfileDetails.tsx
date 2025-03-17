@@ -17,8 +17,6 @@ export function ProfileDetails({
   const [follow, { isLoading }] = useFollowMutation();
   const [isFollowing, setIsFollowing] = useState(profile.isFollowedByRequester);
 
-  console.log(profile);
-
   useEffect(() => {
     setIsFollowing(profile.isFollowedByRequester);
   }, [profile.isFollowedByRequester]);
