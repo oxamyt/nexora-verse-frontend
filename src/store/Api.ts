@@ -41,7 +41,7 @@ export const api = createApi({
         url: id ? `/users?id=${id}` : "/users",
         method: "GET",
       }),
-      providesTags: (result, error, id) =>
+      providesTags: (_result, _error, id) =>
         id ? [{ type: "Profile", id }] : ["Profile"],
     }),
     updateProfile: builder.mutation({
@@ -73,7 +73,7 @@ export const api = createApi({
         url: `/follows/${id}`,
         method: "PATCH",
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "Followers", id },
         { type: "Following", id },
         { type: "Profile", id },
@@ -87,14 +87,14 @@ export const api = createApi({
         url: `/follows/followers/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Followers", id }],
+      providesTags: (_result, _error, id) => [{ type: "Followers", id }],
     }),
     getFollowed: builder.query({
       query: (id) => ({
         url: `/follows/followed/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Following", id }],
+      providesTags: (_result, _error, id) => [{ type: "Following", id }],
     }),
     createPost: builder.mutation({
       query: (data) => ({
@@ -114,14 +114,16 @@ export const api = createApi({
         method: "GET",
         refetchOnMountOrArgChange: true,
       }),
-      providesTags: (result, error, userId) => [{ type: "Posts", id: userId }],
+      providesTags: (_result, _error, userId) => [
+        { type: "Posts", id: userId },
+      ],
     }),
     getPostById: builder.query({
       query: (postId) => ({
         url: `/posts/${postId}`,
         method: "GET",
       }),
-      providesTags: (result, error, postId) => [{ type: "Post", id: postId }],
+      providesTags: (_result, _error, postId) => [{ type: "Post", id: postId }],
     }),
     getLikedPosts: builder.query({
       query: (userId) => ({
@@ -136,7 +138,7 @@ export const api = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (result, _error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
@@ -148,7 +150,7 @@ export const api = createApi({
         url: `/posts/${postId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (result, _error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
@@ -160,7 +162,7 @@ export const api = createApi({
         url: `/likes/post/${postId}`,
         method: "PATCH",
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (result, _error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
@@ -172,7 +174,7 @@ export const api = createApi({
         url: `/likes/comment/${commentId}`,
         method: "PATCH",
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (result, _error, { id }) => [
         { type: "Post", id },
         { type: "Posts", id: result?.userId },
         { type: "Posts", id: "LIST" },
@@ -205,7 +207,7 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Post", id }],
     }),
     updateComment: builder.mutation({
       query: (data) => ({
@@ -213,14 +215,14 @@ export const api = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Post", id }],
     }),
     deleteComment: builder.mutation({
       query: (commentId) => ({
         url: `/comments/${commentId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Post", id }],
+      invalidatesTags: (_result, _error, { id }) => [{ type: "Post", id }],
     }),
     getUsers: builder.query({
       query: () => ({
