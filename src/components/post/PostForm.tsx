@@ -24,6 +24,7 @@ import { IoCreateOutline } from "react-icons/io5";
 import { motion } from "motion/react";
 import { useCreatePostMutation } from "@/store/Api";
 import { FaFileImage } from "react-icons/fa";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export function PostForm() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -181,7 +182,14 @@ export function PostForm() {
                   className="bg-custom-2 text-xl font-bold p-8 w-full"
                   type="submit"
                 >
-                  {isLoading ? "Creating Post..." : "Create Post ♥‿♥"}
+                  {isLoading ? (
+                    <>
+                      Creating Post...
+                      <AiOutlineLoading3Quarters className="animate-spin" />
+                    </>
+                  ) : (
+                    "Create Post ♥‿♥"
+                  )}
                 </Button>
               </motion.div>
             </motion.form>

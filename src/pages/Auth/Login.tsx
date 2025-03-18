@@ -148,7 +148,7 @@ export function Login() {
             {isLoading ? (
               <>
                 Logging In...
-                <AiOutlineLoading3Quarters className="animate-spin ml-2" />
+                <AiOutlineLoading3Quarters className="animate-spin" />
               </>
             ) : (
               "Login ♥‿♥"

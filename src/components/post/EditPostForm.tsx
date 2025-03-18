@@ -26,6 +26,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { useState, useRef } from "react";
 import { FaFileImage } from "react-icons/fa";
 import { Post } from "@/types/types";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export function EditPostForm({ post }: { post: Post }) {
   const [updatePost, { isLoading }] = useUpdatePostMutation();
@@ -184,7 +185,14 @@ export function EditPostForm({ post }: { post: Post }) {
                   className="bg-custom-2 text-xl font-bold p-8 w-full"
                   type="submit"
                 >
-                  {isLoading ? "Saving Changes..." : "Save Changes ♥‿♥"}
+                  {isLoading ? (
+                    <>
+                      Saving Changes...
+                      <AiOutlineLoading3Quarters className="animate-spin" />
+                    </>
+                  ) : (
+                    "Save Changes ♥‿♥"
+                  )}
                 </Button>
               </motion.div>
             </div>

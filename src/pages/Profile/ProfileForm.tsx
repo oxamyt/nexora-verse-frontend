@@ -29,6 +29,7 @@ import { useEffect } from "react";
 import { useUpdateAvatarMutation } from "@/store/Api";
 import { useUpdateBannerMutation } from "@/store/Api";
 import { BannerAvatarForm } from "@/components/profile/BannerAvatarForm";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export function ProfileForm({
   profile,
@@ -237,9 +238,14 @@ export function ProfileForm({
                 className="bg-custom-2 text-xl font-bold p-8 w-full"
                 type="submit"
               >
-                {isUpdatingProfile || isUpdatingAvatar || isUpdatingBanner
-                  ? "Updating profile..."
-                  : "Submit ♥‿♥"}
+                {isUpdatingProfile || isUpdatingAvatar || isUpdatingBanner ? (
+                  <>
+                    Updating Profile...
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                  </>
+                ) : (
+                  "Submit ♥‿♥"
+                )}
               </Button>
             </motion.div>
           </motion.form>

@@ -182,7 +182,7 @@ export function SignUp() {
             {isLoading ? (
               <>
                 Signing Up...
-                <AiOutlineLoading3Quarters className="animate-spin ml-2" />
+                <AiOutlineLoading3Quarters className="animate-spin" />
               </>
             ) : (
               "Sign Up ♥‿♥"
