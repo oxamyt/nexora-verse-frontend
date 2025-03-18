@@ -15,6 +15,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { isErrorData } from "@/types/ErrorDataTypes";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -101,7 +102,14 @@ export function UpdateCommentForm({ comment }: { comment: CommentType }) {
                   className="bg-custom-2 text-xl font-bold p-8 w-full"
                   type="submit"
                 >
-                  {isLoading ? "Updating Comment..." : "Update Comment ♥‿♥"}
+                  {isLoading ? (
+                    <>
+                      Updating Comment...
+                      <AiOutlineLoading3Quarters className="animate-spin" />
+                    </>
+                  ) : (
+                    "Update Comment ♥‿♥"
+                  )}
                 </Button>
               </motion.div>
             </motion.form>

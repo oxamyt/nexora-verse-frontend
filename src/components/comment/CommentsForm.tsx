@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { CommentSchema } from "@/utils/validation/schemas";
 import { useCreateCommentMutation } from "@/store/Api";
 import { useState } from "react";
@@ -99,7 +100,14 @@ export function CommentsForm({ postId }: { postId: number }) {
                   className="bg-custom-2 text-xl font-bold p-8 w-full"
                   type="submit"
                 >
-                  {isLoading ? "Creating Comment..." : "Create Comment ♥‿♥"}
+                  {isLoading ? (
+                    <>
+                      Creating Comment...
+                      <AiOutlineLoading3Quarters className="animate-spin" />
+                    </>
+                  ) : (
+                    "Create Comment ♥‿♥"
+                  )}
                 </Button>
               </motion.div>
             </motion.form>
