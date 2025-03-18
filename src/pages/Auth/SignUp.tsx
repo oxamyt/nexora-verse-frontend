@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export function SignUp() {
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -178,7 +179,14 @@ export function SignUp() {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? "Signing Up..." : "Sign Up ♥‿♥"}
+            {isLoading ? (
+              <>
+                Signing Up...
+                <AiOutlineLoading3Quarters className="animate-spin ml-2" />
+              </>
+            ) : (
+              "Sign Up ♥‿♥"
+            )}
           </Button>
         </motion.div>
         <p className="text-custom-5 font-bold text-center mt-4">

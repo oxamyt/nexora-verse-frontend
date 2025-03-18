@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { setUser } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export function Login() {
   const dispatch = useAppDispatch();
@@ -144,7 +145,14 @@ export function Login() {
             className="bg-custom-2 text-xl font-bold p-8 w-full"
             type="submit"
           >
-            {isLoading ? "Logging in..." : "Login ♥‿♥"}
+            {isLoading ? (
+              <>
+                Logging In...
+                <AiOutlineLoading3Quarters className="animate-spin ml-2" />
+              </>
+            ) : (
+              "Login ♥‿♥"
+            )}
           </Button>
         </motion.div>
 
