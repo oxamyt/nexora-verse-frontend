@@ -162,12 +162,7 @@ export const api = createApi({
         url: `/likes/post/${postId}`,
         method: "PATCH",
       }),
-      invalidatesTags: (result, _error, { id }) => [
-        { type: "Post", id },
-        { type: "Posts", id: result?.userId },
-        { type: "Posts", id: "LIST" },
-        { type: "LikedPosts", id: "LIST" },
-      ],
+      invalidatesTags: () => [{ type: "LikedPosts", id: "LIST" }],
     }),
     likeComment: builder.mutation({
       query: (commentId) => ({

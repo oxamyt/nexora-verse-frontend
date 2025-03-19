@@ -30,14 +30,38 @@ export function PostPage() {
   const isLiked = post?.likes.some(
     (like: { userId: number }) => like.userId === Number(userId)
   );
-
+  const originalPost = { ...post };
   async function submitLike(postId: number) {
     try {
-      await likePost(postId);
+      const newIsLiked = !isLiked;
+      const newLikesCount = newIsLiked
+        ? post._count.likes + 1
+        : post._count.likes - 1;
+      const newLikes = newIsLiked
+        ? [...post.likes, { userId: Number(userId) }]
+        : post.likes.filter((like: any) => like.userId !== Number(userId));
+
+      setPost({
+        ...post,
+        likes: newLikes,
+        _count: {
+          ...post._count,
+          likes: newLikesCount,
+        },
+      });
+
+      await likePost(postId).unwrap();
     } catch (error) {
+      setPost(originalPost);
       console.error("Error during liking post:", error);
     }
   }
+
+  useEffect(() => {
+    if (postData) {
+      setPost(postData);
+    }
+  }, [postData]);
 
   if (isLoading || isFetching) return <SkeletonPostCard />;
   if (!post) return <div>Post not found</div>;
