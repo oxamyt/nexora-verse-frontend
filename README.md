@@ -63,6 +63,8 @@ Nexora Verse is a full-stack social media application inspired by platforms like
 - **Testing**: Vitest + React Testing Library
 - **Build Tool**: Vite
 
+## Installation & Running Locally
+
 ### Clone the repository
 ```sh
 git clone https://github.com/oxamyt/nexora-verse-frontend.git
