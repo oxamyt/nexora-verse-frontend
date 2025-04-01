@@ -62,3 +62,30 @@ Nexora Verse is a full-stack social media application inspired by platforms like
 - **Form Handling**: React Hook Form + Zod validation
 - **Testing**: Vitest + React Testing Library
 - **Build Tool**: Vite
+
+## Installation & Running Locally
+
+### Clone the repository
+```sh
+git clone https://github.com/oxamyt/nexora-verse-frontend.git
+```
+
+### Navigate to the project folder
+```sh
+cd nexora-verse-frontend
+```
+
+### Install dependencies
+```sh
+npm install
+```
+
+### Start the development server
+```sh
+npm run dev
+```
+
+### Run tests
+```sh
+npm run test
+```
